@@ -8,6 +8,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        println("Initial commit. Looking for my files.")
+        println("Testing in a new drive")
     }
 }
