@@ -24,14 +24,15 @@
 
     <TextView
         android:id="@+id/tempText"
-        android:layout_width="103dp"
-        android:layout_height="98dp"
-        android:layout_marginBottom="172dp"
+        android:layout_width="118dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="12dp"
         android:text="@string/temperatureValue"
         android:textAlignment="center"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/hourlyTest"
+        app:layout_constraintBottom_toTopOf="@+id/weatherSummaryText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -65,6 +66,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/weatherSummaryText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="144dp"
+        android:text="@string/weatherSummaryText"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/hourlyTest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

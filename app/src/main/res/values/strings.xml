@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Clear Weather</string>
+    <string name="app_name">Clear Skies</string>
     <string name="cityName">London, England</string>
     <string name="temperatureValue">20c</string>
     <string name="hourlyText">hourly test</string>
     <string name="dailyText">daily test</string>
     <string name="footerText">footer test</string>
+    <string name="weatherSummaryText">Sunny</string>
 </resources>

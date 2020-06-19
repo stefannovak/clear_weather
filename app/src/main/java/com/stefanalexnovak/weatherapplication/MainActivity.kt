@@ -37,7 +37,6 @@ class MainActivity : AppCompatActivity() {
                 println("Failed to execute request")
             }
 
-            @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 println(body)
@@ -49,10 +48,12 @@ class MainActivity : AppCompatActivity() {
                 var locationText = weatherData.name + ", " + weatherData.sys.country
                 val tempNumber = (weatherData.main.temp - 273.15).roundToInt()
                 val time = getDateTime(weatherData.dt.toString())
+                val weatherDescription = weatherData.weather[0].description
 
                 cityText.text = locationText
                 tempText.text = tempNumber.toString() + "c"
                 hourlyTest.text = time.toString()
+                weatherSummaryText.text = weatherDescription
             }
         })
 
