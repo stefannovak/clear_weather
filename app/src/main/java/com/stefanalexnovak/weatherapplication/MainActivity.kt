@@ -1,12 +1,18 @@
 package com.stefanalexnovak.weatherapplication
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
-
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
@@ -31,6 +37,7 @@ class MainActivity : AppCompatActivity() {
                 println("Failed to execute request")
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 println(body)
@@ -38,15 +45,32 @@ class MainActivity : AppCompatActivity() {
                 val gson = GsonBuilder().create()
 
                 val weatherData = gson.fromJson(body, WeatherData::class.java)
+
+                var locationText = weatherData.name + ", " + weatherData.sys.country
+                val tempNumber = (weatherData.main.temp - 273.15).roundToInt()
+                val time = getDateTime(weatherData.dt.toString())
+
+                cityText.text = locationText
+                tempText.text = tempNumber.toString() + "c"
+                hourlyTest.text = time.toString()
             }
         })
 
     }
 
+    private fun getDateTime(s: String): String? {
+        try {
+            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val netDate =Date(s.toLong() * 1000)
+            return sdf.format(netDate)
+        } catch (e: Exception) {
+            return e.toString()
+        }
+    }
+
 }
 
-//????clouds
-class WeatherData(val coord: Coord, val weather: List<Weather>, val base: String, val stations: String,
+data class WeatherData(val coord: Coord, val weather: List<Weather>, val base: String, val stations: String,
                   val main: Main, val visibility: Int, val wind: Wind,
                   val clouds: Clouds, val dt: Long, val sys : Sys, val timezone: Int,
                   val id : Long, val name: String, val cod: Int)

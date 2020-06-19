@@ -13,7 +13,7 @@
         android:text="@string/cityName"
         android:textAlignment="center"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintBottom_toTopOf="@+id/tempText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -23,19 +23,19 @@
         app:layout_constraintVertical_bias="0.854" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tempText"
         android:layout_width="103dp"
         android:layout_height="98dp"
         android:layout_marginBottom="172dp"
         android:text="@string/temperatureValue"
         android:textAlignment="center"
         android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/hourlyTest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/hourlyTest"
         android:layout_width="0dp"
         android:layout_height="55dp"
         android:text="@string/hourlyText"
