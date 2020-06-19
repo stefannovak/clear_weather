@@ -2,6 +2,8 @@ package com.stefanalexnovak.weatherapplication
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
 
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity() {
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 println(body)
+
+                val gson = GsonBuilder().create()
+
+                val weatherData = gson.fromJson(body, WeatherData::class.java)
             }
         })
 
@@ -40,13 +46,16 @@ class MainActivity : AppCompatActivity() {
 }
 
 //????clouds
-data class WeatherData(val coords: Pair<Float, Float>, val weather: Weather, val main: Main,
-                       val visibility: Int, val wind: Pair<Double, Double>,
-                       val clouds: Int, val sysInfo : SysInfo, val timezone: Int,
-                       val cityId : Int, val cityName: String)
-data class Weather(val Id: Int, val mainWeather: String, val description: String, val weatherIcon: String)
-data class Main(val temp: Double, val feelsLike: Double, val minTemp: Double, val maxTemp: Double, val pressure: Double, val humidity: Double)
-data class SysInfo(val type : Int, val Id: Int, val country: String, val sunrise : Int, val sunset: Int)
+class WeatherData(val coord: Coord, val weather: List<Weather>, val base: String, val stations: String,
+                  val main: Main, val visibility: Int, val wind: Wind,
+                  val clouds: Clouds, val dt: Long, val sys : Sys, val timezone: Int,
+                  val id : Long, val name: String, val cod: Int)
+data class Coord(val lon: Double, val lat: Double)
+data class Weather(val id: Int, val main: String, val description: String, val icon: String)
+data class Main(val temp: Double, val feels_like: Double, val temp_min: Double, val temp_max: Double, val pressure: Double, val humidity: Double)
+data class Wind(val speed: Double, val deg: Double)
+data class Clouds(val all: Int)
+data class Sys(val type : Int, val id: Int, val country: String, val sunrise : Int, val sunset: Int)
 
 //{
 // "coord":{"lon":-0.13,"lat":51.51},

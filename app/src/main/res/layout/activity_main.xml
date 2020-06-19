@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/cityText"
         android:layout_width="198dp"
         android:layout_height="34dp"
         android:text="@string/cityName"
