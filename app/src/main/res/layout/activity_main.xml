@@ -4,52 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1FA4B5"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/cityText"
-        android:layout_width="198dp"
-        android:layout_height="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="62dp"
+        android:fontFamily="sans-serif-thin"
         android:text="@string/cityName"
         android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tempText"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/weatherSummaryText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.854" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tempText"
-        android:layout_width="118dp"
-        android:layout_height="63dp"
-        android:layout_marginBottom="12dp"
+        android:layout_width="155dp"
+        android:layout_height="103dp"
+        android:layout_marginBottom="92dp"
+        android:fontFamily="sans-serif-thin"
         android:text="@string/temperatureValue"
         android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toTopOf="@+id/weatherSummaryText"
+        android:textColor="#FFFFFF"
+        android:textSize="72sp"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/hourlyTest"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:text="@string/hourlyText"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="152dp"
+        android:layout_width="411dp"
+        android:layout_height="273dp"
         android:text="@string/dailyText"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
@@ -72,12 +65,138 @@
         android:id="@+id/weatherSummaryText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="144dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-thin"
         android:text="@string/weatherSummaryText"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/hourlyTest"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toTopOf="@+id/tempText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/nowHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/nowHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/oneHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/oneHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/twoHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/twoHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/threeHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/threeHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/fourHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/fourHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/fiveHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/fiveHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/sixHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/sixHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/sevenHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/sevenHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/eightHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/eightHour"
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/nineHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:text="@string/nineHour"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05109489" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

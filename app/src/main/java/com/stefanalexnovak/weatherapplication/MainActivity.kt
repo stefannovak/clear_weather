@@ -1,16 +1,12 @@
 package com.stefanalexnovak.weatherapplication
 
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -52,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
                 cityText.text = locationText
                 tempText.text = tempNumber.toString() + "c"
-                hourlyTest.text = time.toString()
+//                hourlyScrollView.text = time.toString()
                 weatherSummaryText.text = weatherDescription
             }
         })
