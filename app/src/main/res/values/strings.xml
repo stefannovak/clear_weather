@@ -16,4 +16,12 @@
     <string name="sevenHour">11pm\n\n18°</string>
     <string name="eightHour">12am\n\n18°</string>
     <string name="nineHour">1am\n\n17°</string>
+    <string name="currentDayText">Saturday</string>
+    <string name="nextDay">Sunday</string>
+    <string name="twoDay">Monday</string>
+    <string name="threeDay">Tuesday</string>
+    <string name="fourDay">Wednesday</string>
+    <string name="fiveDay">Thursday</string>
+    <string name="sixDay">Friday</string>
+    <string name="sevenDay">Saturday</string>
 </resources>

@@ -29,7 +29,7 @@
         android:id="@+id/tempText"
         android:layout_width="155dp"
         android:layout_height="103dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginBottom="164dp"
         android:fontFamily="sans-serif-thin"
         android:text="@string/temperatureValue"
         android:textAlignment="center"
@@ -40,25 +40,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="411dp"
-        android:layout_height="273dp"
-        android:text="@string/dailyText"
+        android:id="@+id/currentDayText"
+        android:layout_width="75dp"
+        android:layout_height="25dp"
+        android:fontFamily="sans-serif-thin"
+        android:text="@string/currentDayText"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="37dp"
-        android:text="@string/footerText"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -77,11 +68,19 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <View
+        android:id="@+id/hourlyWhiteLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fff"
+        app:layout_constraintBottom_toTopOf="@+id/horizontalScrollView" />
+
     <HorizontalScrollView
         android:id="@+id/horizontalScrollView"
         android:layout_width="0dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        android:layout_height="85dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
@@ -192,11 +191,108 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05109489" />
+    <View
+        android:id="@+id/hourlyWhiteLineBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fff"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:layout_constraintBottom_toTopOf="@+id/footerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/oneDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nextDay"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/twoDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/twoDay"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/threeDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/threeDay"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/fourDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fourDay"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:id="@+id/fiveDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/fiveDay"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/sixDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sixDay"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/sevenDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sevenDay"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/footerWhiteLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#fff"
+        app:layout_constraintBottom_toTopOf="@+id/footerView" />
+
+    <TextView
+        android:id="@+id/footerView"
+        android:layout_width="0dp"
+        android:layout_height="37dp"
+        android:text="@string/footerText"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

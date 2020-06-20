@@ -47,8 +47,7 @@ class MainActivity : AppCompatActivity() {
                 val weatherDescription = weatherData.weather[0].description
 
                 cityText.text = locationText
-                tempText.text = tempNumber.toString() + "c"
-//                hourlyScrollView.text = time.toString()
+                tempText.text = tempNumber.toString() + "°"
                 weatherSummaryText.text = weatherDescription
             }
         })
