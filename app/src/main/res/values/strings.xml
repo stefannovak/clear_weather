@@ -4,24 +4,57 @@
     <string name="temperatureValue">20°</string>
     <string name="hourlyText">hourly test</string>
     <string name="dailyText">daily test</string>
-    <string name="footerText">footer test</string>
+    <string name="footerText">© Stefan Novak | 2020</string>
     <string name="weatherSummaryText">Sunny</string>
-    <string name="nowHour">Now\n\n20°</string>
-    <string name="oneHour">5pm\n\n22°</string>
-    <string name="twoHour">6pm\n\n21°</string>
-    <string name="threeHour">7pm\n\n20°</string>
-    <string name="fourHour">8pm\n\n19°</string>
-    <string name="fiveHour">9pm\n\n19°</string>
-    <string name="sixHour">10pm\n\n18°</string>
-    <string name="sevenHour">11pm\n\n18°</string>
-    <string name="eightHour">12am\n\n18°</string>
-    <string name="nineHour">1am\n\n17°</string>
+
+<!--    HOURLY WEATHER STRINGS-->
+    <string name="nowHour">Now\n\ncloudy\n\n20°</string>
+    <string name="oneHour">5pm\n\ncloudy\n\n22°</string>
+    <string name="twoHour">6pm\n\nclear\n\n21°</string>
+    <string name="threeHour">7pm\n\nclear\n\n20°</string>
+    <string name="fourHour">8pm\n\nclear\n\n19°</string>
+    <string name="fiveHour">9pm\n\ncloudy\n\n19°</string>
+    <string name="sixHour">10pm\n\ncloudy\n\n18°</string>
+    <string name="sevenHour">11pm\n\nrain\n\n18°</string>
+    <string name="eightHour">12am\n\ncloudy\n\n18°</string>
+    <string name="nineHour">1am\n\ncloudy\n\n17°</string>
+
     <string name="currentDayText">Saturday</string>
+
+    <!--    HOURLY TABLE COLUMNS-->
     <string name="nextDay">Sunday</string>
+    <string name="oneHighTemp">22</string>
+    <string name="oneLowTemp">18</string>
+    <string name="oneWeatherIcon">Cloudy</string>
+
     <string name="twoDay">Monday</string>
+    <string name="twoHighTemp">23</string>
+    <string name="twoLowTemp">19</string>
+    <string name="twoWeatherIcon">Sunny</string>
+
     <string name="threeDay">Tuesday</string>
+    <string name="threeHighTemp">24</string>
+    <string name="threeLowTemp">19</string>
+    <string name="threeWeatherIcon">Sunny</string>
+
     <string name="fourDay">Wednesday</string>
+    <string name="fourHighTemp">26</string>
+    <string name="fourLowTemp">20</string>
+    <string name="fourWeatherIcon">Sunny</string>
+
     <string name="fiveDay">Thursday</string>
+    <string name="fiveHighTemp">20</string>
+    <string name="fiveLowTemp">16</string>
+    <string name="fiveWeatherIcon">Rainy</string>
+
     <string name="sixDay">Friday</string>
+    <string name="sixHighTemp">21</string>
+    <string name="sixLowTemp">15</string>
+    <string name="sixWeatherIcon">Cloudy</string>
+
     <string name="sevenDay">Saturday</string>
+    <string name="sevenHighTemp">24</string>
+    <string name="sevenLowTemp">17</string>
+    <string name="sevenWeatherIcon">Thunderstorms</string>
+
 </resources>

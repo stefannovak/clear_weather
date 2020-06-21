@@ -80,7 +80,7 @@
         android:layout_width="0dp"
         android:layout_height="85dp"
         android:scrollbars="none"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintBottom_toTopOf="@+id/dailyForecast"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
@@ -199,7 +199,7 @@
         app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/dailyForecast"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         app:layout_constraintBottom_toTopOf="@+id/footerView"
@@ -207,74 +207,323 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
+        <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
-            <TextView
-                android:id="@+id/oneDay"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/nextDay"
-                android:textColor="#fff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/twoDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/twoDay"
-                android:textColor="#fff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                <TextView
+                    android:id="@+id/oneDay"
+                    android:layout_width="65dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/nextDay"
+                    android:textColor="#fff" />
 
-            <TextView
-                android:id="@+id/threeDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/threeDay"
-                android:textColor="#fff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                <TextView
+                    android:id="@+id/oneWeather"
+                    android:layout_width="224dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/oneWeatherIcon"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
 
-            <TextView
-                android:id="@+id/fourDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/fourDay"
-                android:textColor="#fff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:id="@+id/oneHighTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/oneHighTemp"
+                    android:textColor="#fff" />
 
-            <TextView
-                android:id="@+id/fiveDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/fiveDay"
-                android:textColor="#fff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                <TextView
+                    android:id="@+id/oneLowTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/oneLowTemp"
+                    android:textColor="#A1FFFFFF" />
+            </TableRow>
 
-            <TextView
-                android:id="@+id/sixDay"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sixDay"
-                android:textColor="#fff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/sevenDay"
+                <TextView
+                    android:id="@+id/twoDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/twoDay"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/twoWeather"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/twoWeatherIcon"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/twoHighTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/twoHighTemp"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/twoLowTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/twoLowTemp"
+                    android:textColor="#A1FFFFFF" />
+
+            </TableRow>
+
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/sevenDay"
-                android:textColor="#fff"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
-        </LinearLayout>
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/threeDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/threeDay"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/threeWeather"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/threeWeatherIcon"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/threeHighTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/threeHighTemp"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/threeLowTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/threeLowTemp"
+                    android:textColor="#A1FFFFFF" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/fourDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fourDay"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/fourWeather"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fourWeatherIcon"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/fourHighTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fourHighTemp"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/fourLowTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fourLowTemp"
+                    android:textColor="#A1FFFFFF" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/fiveDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fiveDay"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/fiveWeather"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fiveWeatherIcon"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/fiveHighTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fiveHighTemp"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/fiveLowTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/fiveLowTemp"
+                    android:textColor="#A1FFFFFF" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/sixDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sixDay"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/sixWeather"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sixWeatherIcon"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/sixHighTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sixHighTemp"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/sixLowTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sixLowTemp"
+                    android:textColor="#A1FFFFFF" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/sevenDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sevenDay"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/sevenWeather"
+                    android:layout_width="203dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sevenWeatherIcon"
+                    android:textAlignment="center"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/sevenHighTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sevenHighTemp"
+                    android:textColor="#fff" />
+
+                <TextView
+                    android:id="@+id/sevenLowTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/sevenLowTemp"
+                    android:textColor="#A1FFFFFF" />
+            </TableRow>
+        </TableLayout>
     </ScrollView>
 
     <View
@@ -290,6 +539,7 @@
         android:layout_height="37dp"
         android:text="@string/footerText"
         android:textAlignment="center"
+        android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
