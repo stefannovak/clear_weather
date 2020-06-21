@@ -41,27 +41,43 @@ class MainActivity : AppCompatActivity() {
 
                 val weatherData = gson.fromJson(body, WeatherData::class.java)
 
-                var locationText = weatherData.name + ", " + weatherData.sys.country
-                val tempNumber = (weatherData.main.temp - 273.15).roundToInt()
-                val time = getDateTime(weatherData.dt.toString())
+                var locationText = weatherData.name
+                var tempNumber = (weatherData.main.temp - 273.15).roundToInt()
+                val day = getDateDay(weatherData.dt.toString())
                 val weatherDescription = weatherData.weather[0].description
 
+                currentDayText.text = day
                 cityText.text = locationText
-                tempText.text = tempNumber.toString() + "°"
                 weatherSummaryText.text = weatherDescription
+                tempText.text = tempNumber.toString() + "°"
+
             }
         })
 
+
     }
 
-    private fun getDateTime(s: String): String? {
+    /**
+     * Gets the day from the unix timestamp
+     */
+    private fun getDateDay(s: String): String? {
         try {
-            val sdf = SimpleDateFormat("dd/MM/yyyy")
+            val sdf = SimpleDateFormat("EEEE")
             val netDate =Date(s.toLong() * 1000)
             return sdf.format(netDate)
         } catch (e: Exception) {
             return e.toString()
         }
+    }
+
+    /**
+     * Converts celcius to fahrenheit, rounds it to a whole number
+     */
+
+    fun celciusToFahrenheit(celcius: Int) : Int {
+        var farenValue = celcius * 1.8 + 32
+        farenValue.roundToInt()
+        return farenValue.toInt()
     }
 
 }
