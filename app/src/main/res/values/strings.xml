@@ -8,16 +8,22 @@
     <string name="weatherSummaryText">Sunny</string>
 
 <!--    HOURLY WEATHER STRINGS-->
-    <string name="nowHour">Now\n\ncloudy\n\n20°</string>
-    <string name="oneHour">5pm\n\ncloudy\n\n22°</string>
-    <string name="twoHour">6pm\n\nclear\n\n21°</string>
-    <string name="threeHour">7pm\n\nclear\n\n20°</string>
-    <string name="fourHour">8pm\n\nclear\n\n19°</string>
-    <string name="fiveHour">9pm\n\ncloudy\n\n19°</string>
-    <string name="sixHour">10pm\n\ncloudy\n\n18°</string>
-    <string name="sevenHour">11pm\n\nrain\n\n18°</string>
-    <string name="eightHour">12am\n\ncloudy\n\n18°</string>
-    <string name="nineHour">1am\n\ncloudy\n\n17°</string>
+    <string name="nowHour">Now</string>
+    <string name="oneHour">5pm</string>
+    <string name="twoHour">6pm</string>
+    <string name="threeHour">7pm</string>
+    <string name="fourHour">8pm</string>
+    <string name="fiveHour">9pm</string>
+    <string name="sixHour">10pm</string>
+    <string name="sevenHour">11pm</string>
+    <string name="eightHour">12am</string>
+    <string name="nineHour">1am</string>
+    <string name="tenHour">2am</string>
+    <string name="elevenHour">3am</string>
+    <string name="twelvehour">4am</string>
+
+    <string name="nowTemp">2??</string>
+    <string name="oneTemp">3??</string>
 
     <string name="currentDayText">Saturday</string>
 

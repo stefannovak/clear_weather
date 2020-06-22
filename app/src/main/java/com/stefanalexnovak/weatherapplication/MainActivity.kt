@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity() {
                  * android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
                  * Sometimes works, sometimes doesn't???
                  */
-                val oneMax = kelvinToCelsius(weatherData.daily[0].temp.max).toString()
-                val oneMin = kelvinToCelsius(weatherData.daily[0].temp.min).toString()
 
                 //Fill out info from top to bottom.
                 //Top
@@ -56,14 +54,41 @@ class MainActivity : AppCompatActivity() {
                 weatherSummaryText.text = weatherData.current.weather[0].description
                 tempText.text = kelvinToCelsius(weatherData.current.temp).toString() + "°"
 
-                //Hourly
+                /////////////////////////Hourly
                 currentDayText.text = getDateDay(weatherData.current.dt)
 
-                //Daily
+                nowTemp.text = kelvinToCelsius(weatherData.hourly[0].temp).toString()
+
+                oneTemp.text = kelvinToCelsius(weatherData.hourly[1].temp).toString()
+
+                twoTemp.text = kelvinToCelsius(weatherData.hourly[2].temp).toString()
+
+                threeTemp.text = kelvinToCelsius(weatherData.hourly[3].temp).toString()
+
+                fourTemp.text = kelvinToCelsius(weatherData.hourly[4].temp).toString()
+
+                fiveTemp.text = kelvinToCelsius(weatherData.hourly[5].temp).toString()
+
+                sixTemp.text = kelvinToCelsius(weatherData.hourly[6].temp).toString()
+
+                sevenTemp.text = kelvinToCelsius(weatherData.hourly[7].temp).toString()
+
+                eightTemp.text = kelvinToCelsius(weatherData.hourly[8].temp).toString()
+
+                nineTemp.text = kelvinToCelsius(weatherData.hourly[9].temp).toString()
+
+                tenTemp.text = kelvinToCelsius(weatherData.hourly[10].temp).toString()
+
+                elevenTemp.text = kelvinToCelsius(weatherData.hourly[11].temp).toString()
+
+                twelveTemp.text = kelvinToCelsius(weatherData.hourly[12].temp).toString()
+
+
+                /////////////////////////Daily
                 oneDay.text = getNextDay(currentDayText.text.toString())
                 oneWeather.text = weatherData.daily[0].weather[0].main
-//                oneHighTemp.text = oneMax
-//                oneLowTemp.text = oneMin
+//                oneHighTemp.text = kelvinToCelsius(weatherData.daily[0].temp.max).toString()
+//                oneLowTemp.text = kelvinToCelsius(weatherData.daily[0].temp.min).toString()
 
                 twoDay.text = getNextDay(oneDay.text.toString())
                 twoWeather.text = weatherData.daily[1].weather[0].main
@@ -72,18 +97,28 @@ class MainActivity : AppCompatActivity() {
 
                 threeDay.text = getNextDay(twoDay.text.toString())
                 threeWeather.text = weatherData.daily[2].weather[0].main
+//                threeHighTemp.text = kelvinToCelsius(weatherData.daily[2].temp.max).toString()
+//                threeLowTemp.text = kelvinToCelsius(weatherData.daily[2].temp.min).toString()
 
                 fourDay.text = getNextDay(threeDay.text.toString())
                 fourWeather.text = weatherData.daily[3].weather[0].main
+//                fourHighTemp.text = kelvinToCelsius(weatherData.daily[3].temp.max).toString()
+//                fourLowTemp.text = kelvinToCelsius(weatherData.daily[3].temp.min).toString()
 
                 fiveDay.text = getNextDay(fourDay.text.toString())
                 fiveWeather.text = weatherData.daily[4].weather[0].main
+//                fiveHighTemp.text = kelvinToCelsius(weatherData.daily[4].temp.max).toString()
+//                fiveLowTemp.text = kelvinToCelsius(weatherData.daily[4].temp.min).toString()
 
                 sixDay.text = getNextDay(fiveDay.text.toString())
                 sixWeather.text = weatherData.daily[5].weather[0].main
+//                sixHighTemp.text = kelvinToCelsius(weatherData.daily[5].temp.max).toString()
+//                sixLowTemp.text = kelvinToCelsius(weatherData.daily[5].temp.min).toString()
 
                 sevenDay.text = getNextDay(sixDay.text.toString())
                 sevenWeather.text = weatherData.daily[6].weather[0].main
+//                sevenHighTemp.text = kelvinToCelsius(weatherData.daily[6].temp.max).toString()
+//                sevenLowTemp.text = kelvinToCelsius(weatherData.daily[6].temp.min).toString()
 
             }
         })
