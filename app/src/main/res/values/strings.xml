@@ -23,18 +23,18 @@
 
     <!--    HOURLY TABLE COLUMNS-->
     <string name="nextDay">Sunday</string>
-    <string name="oneHighTemp">22</string>
-    <string name="oneLowTemp">18</string>
+    <string name="oneHighTemp">t?</string>
+    <string name="oneLowTemp">"t?"</string>
     <string name="oneWeatherIcon">Cloudy</string>
 
     <string name="twoDay">Monday</string>
-    <string name="twoHighTemp">23</string>
-    <string name="twoLowTemp">19</string>
+    <string name="twoHighTemp">23?</string>
+    <string name="twoLowTemp">19?</string>
     <string name="twoWeatherIcon">Sunny</string>
 
     <string name="threeDay">Tuesday</string>
-    <string name="threeHighTemp">24</string>
-    <string name="threeLowTemp">19</string>
+    <string name="threeHighTemp">24?</string>
+    <string name="threeLowTemp">19?</string>
     <string name="threeWeatherIcon">Sunny</string>
 
     <string name="fourDay">Wednesday</string>

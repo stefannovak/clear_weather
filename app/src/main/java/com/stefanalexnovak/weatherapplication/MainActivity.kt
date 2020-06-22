@@ -42,6 +42,14 @@ class MainActivity : AppCompatActivity() {
 
                 val weatherData = gson.fromJson(body, WeatherData::class.java)
 
+                /**
+                 * ERROR: High/Low temps not registering.
+                 * android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+                 * Sometimes works, sometimes doesn't???
+                 */
+                val oneMax = kelvinToCelsius(weatherData.daily[0].temp.max).toString()
+                val oneMin = kelvinToCelsius(weatherData.daily[0].temp.min).toString()
+
                 //Fill out info from top to bottom.
                 //Top
                 cityText.text = getLocalLocation(weatherData.timezone)
@@ -53,16 +61,30 @@ class MainActivity : AppCompatActivity() {
 
                 //Daily
                 oneDay.text = getNextDay(currentDayText.text.toString())
-                twoDay.text = getNextDay(oneDay.text.toString())
-                threeDay.text = getNextDay(twoDay.text.toString())
-                fourDay.text = getNextDay(threeDay.text.toString())
-                fiveDay.text = getNextDay(fourDay.text.toString())
-                sixDay.text = getNextDay(fiveDay.text.toString())
-                sevenDay.text = getNextDay(sixDay.text.toString())
+                oneWeather.text = weatherData.daily[0].weather[0].main
+//                oneHighTemp.text = oneMax
+//                oneLowTemp.text = oneMin
 
-//                oneHighTemp.text = kelvinToCelsius(weatherData.daily[0].temp.max).toString()
-//                oneHighTemp.text = "43"
-//                oneLowTemp.text = weatherData.daily[0].temp.min.toString()
+                twoDay.text = getNextDay(oneDay.text.toString())
+                twoWeather.text = weatherData.daily[1].weather[0].main
+//                twoHighTemp.text = kelvinToCelsius(weatherData.daily[1].temp.max).toString()
+//                twoLowTemp.text = kelvinToCelsius(weatherData.daily[1].temp.min).toString()
+
+                threeDay.text = getNextDay(twoDay.text.toString())
+                threeWeather.text = weatherData.daily[2].weather[0].main
+
+                fourDay.text = getNextDay(threeDay.text.toString())
+                fourWeather.text = weatherData.daily[3].weather[0].main
+
+                fiveDay.text = getNextDay(fourDay.text.toString())
+                fiveWeather.text = weatherData.daily[4].weather[0].main
+
+                sixDay.text = getNextDay(fiveDay.text.toString())
+                sixWeather.text = weatherData.daily[5].weather[0].main
+
+                sevenDay.text = getNextDay(sixDay.text.toString())
+                sevenWeather.text = weatherData.daily[6].weather[0].main
+
             }
         })
 
