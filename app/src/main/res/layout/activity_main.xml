@@ -352,22 +352,24 @@
 
                 <ImageView
                     android:id="@+id/nowIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
-                    app:srcCompat="@android:drawable/btn_star" />
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/clear_day" />
 
                 <ImageView
                     android:id="@+id/oneIcon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
+                    android:scaleType="center"
                     app:srcCompat="@android:drawable/btn_star" />
             </TableRow>
 
