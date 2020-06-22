@@ -12,6 +12,7 @@ import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
+    private val locationRegex = "^.*\\/([^\\/]*)\$".toRegex()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +24,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchJson() {
-        val url =
-            "https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=ee3cc93e43ef00b96a6bb4e56902d020"
+
+        val url = "https://api.openweathermap.org/data/2.5/onecall?lat=51.51&lon=-0.19&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
 
         val request = Request.Builder().url(url).build()
 
@@ -41,16 +42,27 @@ class MainActivity : AppCompatActivity() {
 
                 val weatherData = gson.fromJson(body, WeatherData::class.java)
 
-                var locationText = weatherData.name
-                var tempNumber = (weatherData.main.temp - 273.15).roundToInt()
-                val day = getDateDay(weatherData.dt.toString())
-                val weatherDescription = weatherData.weather[0].description
+                //Fill out info from top to bottom.
+                //Top
+                cityText.text = getLocalLocation(weatherData.timezone)
+                weatherSummaryText.text = weatherData.current.weather[0].description
+                tempText.text = kelvinToCelsius(weatherData.current.temp).toString() + "°"
 
-                currentDayText.text = day
-                cityText.text = locationText
-                weatherSummaryText.text = weatherDescription
-                tempText.text = tempNumber.toString() + "°"
+                //Hourly
+                currentDayText.text = getDateDay(weatherData.current.dt)
 
+                //Daily
+                oneDay.text = getNextDay(currentDayText.text.toString())
+                twoDay.text = getNextDay(oneDay.text.toString())
+                threeDay.text = getNextDay(twoDay.text.toString())
+                fourDay.text = getNextDay(threeDay.text.toString())
+                fiveDay.text = getNextDay(fourDay.text.toString())
+                sixDay.text = getNextDay(fiveDay.text.toString())
+                sevenDay.text = getNextDay(sixDay.text.toString())
+
+//                oneHighTemp.text = kelvinToCelsius(weatherData.daily[0].temp.max).toString()
+//                oneHighTemp.text = "43"
+//                oneLowTemp.text = weatherData.daily[0].temp.min.toString()
             }
         })
 
@@ -58,76 +70,70 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Uses Regex to get the word after a "/", using the timezone info from WeatherData.
+     */
+    fun getLocalLocation(timezoneString: String) : String {
+        return locationRegex.matchEntire(timezoneString)?.groups?.get(1)?.value.toString()
+    }
+
+    /**
      * Gets the day from the unix timestamp
      */
-    private fun getDateDay(s: String): String? {
+    private fun getDateDay(unixCode: Long): String? {
         try {
             val sdf = SimpleDateFormat("EEEE")
-            val netDate =Date(s.toLong() * 1000)
+            val netDate = Date(unixCode.toLong() * 1000)
             return sdf.format(netDate)
         } catch (e: Exception) {
             return e.toString()
         }
     }
 
+    private fun getNextDay(day: String) : String {
+        var nextDay = "Test"
+        if(day == "Monday") {nextDay = "Tuesday"}
+        else if(day == "Tuesday") {nextDay = "Wednesday"}
+        else if(day == "Wednesday") {nextDay = "Thursday"}
+        else if(day == "Thursday") {nextDay = "Friday"}
+        else if(day == "Friday") {nextDay = "Saturday"}
+        else if(day == "Saturday") {nextDay = "Sunday"}
+        else if(day == "Sunday") {nextDay = "Monday"}
+
+        return nextDay
+    }
+
     /**
      * Converts celcius to fahrenheit, rounds it to a whole number
      */
 
-    fun celciusToFahrenheit(celcius: Int) : Int {
-        var farenValue = celcius * 1.8 + 32
-        farenValue.roundToInt()
-        return farenValue.toInt()
+    fun celsiusToFahrenheit(celcius: Int) : Int {
+        return (celcius * 1.8 + 32).roundToInt()
     }
 
+    /**
+     * converts kelvin to celsius, rounded to a whole number
+     */
+    fun kelvinToCelsius(kelvin: Double) : Int {
+        return (kelvin - 273.15).roundToInt()
+    }
 }
 
-data class WeatherData(val coord: Coord, val weather: List<Weather>, val base: String, val stations: String,
-                  val main: Main, val visibility: Int, val wind: Wind,
-                  val clouds: Clouds, val dt: Long, val sys : Sys, val timezone: Int,
-                  val id : Long, val name: String, val cod: Int)
-data class Coord(val lon: Double, val lat: Double)
-data class Weather(val id: Int, val main: String, val description: String, val icon: String)
-data class Main(val temp: Double, val feels_like: Double, val temp_min: Double, val temp_max: Double, val pressure: Double, val humidity: Double)
-data class Wind(val speed: Double, val deg: Double)
-data class Clouds(val all: Int)
-data class Sys(val type : Int, val id: Int, val country: String, val sunrise : Int, val sunset: Int)
+data class WeatherData(val lat: Double, val lon: Double, val timezone: String, val timezone_offset: Long,
+                       val current: Current, val hourly: List<Hourly>, val daily: List<Daily>)
 
-//{
-// "coord":{"lon":-0.13,"lat":51.51},
-// "weather": [
-// {
-    // "id":803,
-    // "main": "Clouds",
-    // "description":"broken clouds",
-    // "icon":"04d"
-// }
-// ],
-// "base":"stations",
-// "main":{
-    // "temp":289.87,
-    // "feels_like":285.38,
-    // "temp_min":288.71,
-    // "temp_max":290.93,
-    // "pressure":1014,
-    // "humidity":67
-// },
-// "visibility":10000,
-// "wind":{
-    // "speed":6.7,
-    // "deg":230
-// },
-// "clouds":{"all":75},
-// "dt":1592563468,
-// "sys":{
-    // "type":1,
-    // "id":1414,
-    // "country":"GB",
-    // "sunrise":1592538170,
-    // "sunset":1592598063
-// },
-// "timezone":3600,
-// "id":2643743,
-// "name":"London",
-// "cod":200
-// }
+data class Current(val dt: Long, val sunrise: Long, val sunset: Long, val temp: Double, val feels_like: Double,
+                   val uvi: Double, val clouds: Double, val visibility: Double, val wind_speed: Double,
+                   val wind_deg: Int, val weather: List<Weather>)
+
+data class Weather(val id: Long, val main: String, val description: String, val icon: String)
+
+data class Hourly(val dt: Long, val temp: Double, val feels_like: Double, val pressure: Int, val humidity: Int, val dew_point: Double,
+                  val clouds: Int, val wind_speed: Double, val wind_deg: Int, val weather: List<Weather>)
+
+data class Daily(val dt: Long, val sunrise: Long, val sunset: Long, val temp: Temp, val feels_like: FeelsLike,
+                 val pressure: Int, val humidity: Int, val dew_point: Double, val wind_speed: Double, val wind_deg: Int,
+                 val weather: List<Weather>, val clouds: Int, val uvi: Double)
+
+data class Temp(val day: Double, val min: Double, val max: Double, val night: Double, val eve: Double, val morn: Double)
+
+data class FeelsLike(val day: Double, val night: Double, val eve: Double, val morn: Double)
