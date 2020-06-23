@@ -52,13 +52,81 @@ class MainActivity : AppCompatActivity() {
 
                 val weatherData = gson.fromJson(body, WeatherData::class.java)
 
-                /**
-                 * ERROR: High/Low temps not registering.
-                 * android.view.ViewRootImpl$CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
-                 * Sometimes works, sometimes doesn't???
-                 */
-
                 runOnUiThread {
+
+                    /**
+                     * The celsius/fahrenheit switch
+                     * I am 100% this is very redundant code. Could be improved.
+                     * But for now it works.
+                     */
+                    temperatureSwitch.setOnClickListener{
+                        if(temperatureSwitch.isChecked) {
+                            tempText.text = kelvinToFahrenheit(weatherData.current.temp).toString() + "°"
+
+                            oneHighTemp.text = kelvinToFahrenheit(weatherData.daily[1].temp.max).toString()
+                            twoHighTemp.text = kelvinToFahrenheit(weatherData.daily[2].temp.max).toString()
+                            threeHighTemp.text = kelvinToFahrenheit(weatherData.daily[3].temp.max).toString()
+                            fourHighTemp.text = kelvinToFahrenheit(weatherData.daily[4].temp.max).toString()
+                            fiveHighTemp.text = kelvinToFahrenheit(weatherData.daily[5].temp.max).toString()
+                            sixHighTemp.text = kelvinToFahrenheit(weatherData.daily[6].temp.max).toString()
+                            sevenHighTemp.text = kelvinToFahrenheit(weatherData.daily[7].temp.max).toString()
+
+                            oneLowTemp.text = kelvinToFahrenheit(weatherData.daily[1].temp.max).toString()
+                            twoLowTemp.text = kelvinToFahrenheit(weatherData.daily[2].temp.min).toString()
+                            threeLowTemp.text = kelvinToFahrenheit(weatherData.daily[3].temp.min).toString()
+                            fourLowTemp.text = kelvinToFahrenheit(weatherData.daily[4].temp.min).toString()
+                            fiveLowTemp.text = kelvinToFahrenheit(weatherData.daily[5].temp.min).toString()
+                            sixLowTemp.text = kelvinToFahrenheit(weatherData.daily[6].temp.min).toString()
+                            sevenLowTemp.text = kelvinToFahrenheit(weatherData.daily[7].temp.min).toString()
+
+                            nowTemp.text = kelvinToFahrenheit(weatherData.current.temp).toString()
+                            oneTemp.text = kelvinToFahrenheit(weatherData.hourly[1].temp).toString()
+                            twoTemp.text = kelvinToFahrenheit(weatherData.hourly[2].temp).toString()
+                            threeTemp.text = kelvinToFahrenheit(weatherData.hourly[3].temp).toString()
+                            fourTemp.text = kelvinToFahrenheit(weatherData.hourly[4].temp).toString()
+                            fiveTemp.text = kelvinToFahrenheit(weatherData.hourly[5].temp).toString()
+                            sixTemp.text = kelvinToFahrenheit(weatherData.hourly[6].temp).toString()
+                            sevenTemp.text = kelvinToFahrenheit(weatherData.hourly[7].temp).toString()
+                            eightTemp.text = kelvinToFahrenheit(weatherData.hourly[8].temp).toString()
+                            nineTemp.text = kelvinToFahrenheit(weatherData.hourly[9].temp).toString()
+                            tenTemp.text = kelvinToFahrenheit(weatherData.hourly[10].temp).toString()
+                            elevenTemp.text = kelvinToFahrenheit(weatherData.hourly[11].temp).toString()
+                            twelveTemp.text = kelvinToFahrenheit(weatherData.hourly[12].temp).toString()
+                        } else {
+                            tempText.text = kelvinToCelsius(weatherData.current.temp).toString() + "°"
+
+                            oneHighTemp.text = kelvinToCelsius(weatherData.daily[1].temp.max).toString()
+                            twoHighTemp.text = kelvinToCelsius(weatherData.daily[2].temp.max).toString()
+                            threeHighTemp.text = kelvinToCelsius(weatherData.daily[3].temp.max).toString()
+                            fourHighTemp.text = kelvinToCelsius(weatherData.daily[4].temp.max).toString()
+                            fiveHighTemp.text = kelvinToCelsius(weatherData.daily[5].temp.max).toString()
+                            sixHighTemp.text = kelvinToCelsius(weatherData.daily[6].temp.max).toString()
+                            sevenHighTemp.text = kelvinToCelsius(weatherData.daily[7].temp.max).toString()
+
+                            oneLowTemp.text = kelvinToCelsius(weatherData.daily[1].temp.max).toString()
+                            twoLowTemp.text = kelvinToCelsius(weatherData.daily[2].temp.min).toString()
+                            threeLowTemp.text = kelvinToCelsius(weatherData.daily[3].temp.min).toString()
+                            fourLowTemp.text = kelvinToCelsius(weatherData.daily[4].temp.min).toString()
+                            fiveLowTemp.text = kelvinToCelsius(weatherData.daily[5].temp.min).toString()
+                            sixLowTemp.text = kelvinToCelsius(weatherData.daily[6].temp.min).toString()
+                            sevenLowTemp.text = kelvinToCelsius(weatherData.daily[7].temp.min).toString()
+
+                            nowTemp.text = kelvinToCelsius(weatherData.current.temp).toString()
+                            oneTemp.text = kelvinToCelsius(weatherData.hourly[1].temp).toString()
+                            twoTemp.text = kelvinToCelsius(weatherData.hourly[2].temp).toString()
+                            threeTemp.text = kelvinToCelsius(weatherData.hourly[3].temp).toString()
+                            fourTemp.text = kelvinToCelsius(weatherData.hourly[4].temp).toString()
+                            fiveTemp.text = kelvinToCelsius(weatherData.hourly[5].temp).toString()
+                            sixTemp.text = kelvinToCelsius(weatherData.hourly[6].temp).toString()
+                            sevenTemp.text = kelvinToCelsius(weatherData.hourly[7].temp).toString()
+                            eightTemp.text = kelvinToCelsius(weatherData.hourly[8].temp).toString()
+                            nineTemp.text = kelvinToCelsius(weatherData.hourly[9].temp).toString()
+                            tenTemp.text = kelvinToCelsius(weatherData.hourly[10].temp).toString()
+                            elevenTemp.text = kelvinToCelsius(weatherData.hourly[11].temp).toString()
+                            twelveTemp.text = kelvinToCelsius(weatherData.hourly[12].temp).toString()
+                        }
+                    }
+
                     //Fill out info from top to bottom.
                     //Top
                     cityText.text = getLocalLocation(weatherData.timezone)
@@ -156,12 +224,13 @@ class MainActivity : AppCompatActivity() {
                     sevenHighTemp.text = kelvinToCelsius(weatherData.daily[7].temp.max).toString()
                     sevenLowTemp.text = kelvinToCelsius(weatherData.daily[7].temp.min).toString()
 
-                }
-            }
-        })
+
+                } //end of UI thread
+            } //end of onResponse()
+        }) //end of newCall()
 
 
-    }
+    } //end of fetchJson()
 
     /**
      * Uses Regex to get the word after a "/", using the timezone info from WeatherData.
@@ -170,7 +239,10 @@ class MainActivity : AppCompatActivity() {
         return locationRegex.matchEntire(timezoneString)?.groups?.get(1)?.value.toString()
     }
 
-    fun hourlyConvert(twentyFourHour: String) : String {
+    /**
+     * Converts 24 hour to 12 hour
+     */
+    private fun hourlyConvert(twentyFourHour: String) : String {
         var hourlyTime = ""
         if(twentyFourHour == "00:00") {hourlyTime = "12am"}
         else if(twentyFourHour == "01:00") {hourlyTime = "1am"}
@@ -215,7 +287,6 @@ class MainActivity : AppCompatActivity() {
         println(hourOfDay)
 
         return hourlyConvert(timeOfDay.toString())
-//        return timeOfDay.toString()
     }
 
     /**
@@ -231,6 +302,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Uses the current day to return the next days
+     * for the weekly forecast
+     */
     private fun getNextDay(day: String) : String {
         var nextDay = "Test"
         if(day == "Monday") {nextDay = "Tuesday"}
@@ -245,11 +320,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * Converts celcius to fahrenheit, rounds it to a whole number
+     * Converts kelvin to fahrenheit, rounds it to a whole number
      */
-
-    fun celsiusToFahrenheit(celcius: Int) : Int {
-        return (celcius * 1.8 + 32).roundToInt()
+    fun kelvinToFahrenheit(kelvin: Double) : Int {
+        return ((kelvin * 1.8) - 459.67).roundToInt()
     }
 
     /**
