@@ -1,12 +1,17 @@
 package com.stefanalexnovak.weatherapplication
 
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalTime
+import java.time.ZoneOffset
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.roundToInt
@@ -24,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         fetchJson()
 
         populateMap()
+
     }
 
     private fun fetchJson() {
@@ -37,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                 println("Failed to execute request")
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call, response: Response) {
                 val body = response.body?.string()
                 println(body)
@@ -62,41 +69,53 @@ class MainActivity : AppCompatActivity() {
                     currentDayText.text = getDateDay(weatherData.current.dt)
 
                     nowTemp.text = kelvinToCelsius(weatherData.current.temp).toString()
-                    nowIcon.setImageResource(iconMap[weatherData.hourly[0].weather[0].icon]!!)
+                    nowIcon.setImageResource(iconMap[weatherData.current.weather[0].icon]!!)
 
+                    oneHour.text = getHourlyTime(weatherData.hourly[1].dt + 3600)
                     oneTemp.text = kelvinToCelsius(weatherData.hourly[1].temp).toString()
                     oneIcon.setImageResource(iconMap[weatherData.hourly[1].weather[0].icon]!!)
 
+                    twoHour.text = getHourlyTime(weatherData.hourly[2].dt + 3600)
                     twoTemp.text = kelvinToCelsius(weatherData.hourly[2].temp).toString()
                     twoIcon.setImageResource(iconMap[weatherData.hourly[2].weather[0].icon]!!)
 
+                    threeHour.text = getHourlyTime(weatherData.hourly[3].dt + 3600)
                     threeTemp.text = kelvinToCelsius(weatherData.hourly[3].temp).toString()
                     threeIcon.setImageResource(iconMap[weatherData.hourly[3].weather[0].icon]!!)
 
+                    fourHour.text = getHourlyTime(weatherData.hourly[4].dt + 3600)
                     fourTemp.text = kelvinToCelsius(weatherData.hourly[4].temp).toString()
                     fourIcon.setImageResource(iconMap[weatherData.hourly[4].weather[0].icon]!!)
 
+                    fiveHour.text = getHourlyTime(weatherData.hourly[5].dt + 3600)
                     fiveTemp.text = kelvinToCelsius(weatherData.hourly[5].temp).toString()
                     fiveIcon.setImageResource(iconMap[weatherData.hourly[5].weather[0].icon]!!)
 
+                    sixHour.text = getHourlyTime(weatherData.hourly[6].dt + 3600)
                     sixTemp.text = kelvinToCelsius(weatherData.hourly[6].temp).toString()
                     sixIcon.setImageResource(iconMap[weatherData.hourly[6].weather[0].icon]!!)
 
+                    sevenHour.text = getHourlyTime(weatherData.hourly[7].dt + 3600)
                     sevenTemp.text = kelvinToCelsius(weatherData.hourly[7].temp).toString()
                     sevenIcon.setImageResource(iconMap[weatherData.hourly[7].weather[0].icon]!!)
 
+                    eightHour.text = getHourlyTime(weatherData.hourly[8].dt + 3600)
                     eightTemp.text = kelvinToCelsius(weatherData.hourly[8].temp).toString()
                     eightIcon.setImageResource(iconMap[weatherData.hourly[8].weather[0].icon]!!)
 
+                    nineHour.text = getHourlyTime(weatherData.hourly[9].dt + 3600)
                     nineTemp.text = kelvinToCelsius(weatherData.hourly[9].temp).toString()
                     nineIcon.setImageResource(iconMap[weatherData.hourly[9].weather[0].icon]!!)
 
+                    tenHour.text = getHourlyTime(weatherData.hourly[10].dt + 3600)
                     tenTemp.text = kelvinToCelsius(weatherData.hourly[10].temp).toString()
                     tenIcon.setImageResource(iconMap[weatherData.hourly[10].weather[0].icon]!!)
 
+                    elevenHour.text = getHourlyTime(weatherData.hourly[11].dt + 3600)
                     elevenTemp.text = kelvinToCelsius(weatherData.hourly[11].temp).toString()
                     elevenIcon.setImageResource(iconMap[weatherData.hourly[11].weather[0].icon]!!)
 
+                    twelveHour.text = getHourlyTime(weatherData.hourly[12].dt + 3600)
                     twelveTemp.text = kelvinToCelsius(weatherData.hourly[12].temp).toString()
                     twelveIcon.setImageResource(iconMap[weatherData.hourly[12].weather[0].icon]!!)
 
@@ -149,6 +168,54 @@ class MainActivity : AppCompatActivity() {
      */
     fun getLocalLocation(timezoneString: String) : String {
         return locationRegex.matchEntire(timezoneString)?.groups?.get(1)?.value.toString()
+    }
+
+    fun hourlyConvert(twentyFourHour: String) : String {
+        var hourlyTime = ""
+        if(twentyFourHour == "00:00") {hourlyTime = "12am"}
+        else if(twentyFourHour == "01:00") {hourlyTime = "1am"}
+        else if(twentyFourHour == "02:00") {hourlyTime = "2am"}
+        else if(twentyFourHour == "03:00") {hourlyTime = "3am"}
+        else if(twentyFourHour == "04:00") {hourlyTime = "4am"}
+        else if(twentyFourHour == "05:00") {hourlyTime = "5am"}
+        else if(twentyFourHour == "06:00") {hourlyTime = "6am"}
+        else if(twentyFourHour == "07:00") {hourlyTime = "7am"}
+        else if(twentyFourHour == "08:00") {hourlyTime = "8am"}
+        else if(twentyFourHour == "09:00") {hourlyTime = "9am"}
+        else if(twentyFourHour == "10:00") {hourlyTime = "10am"}
+        else if(twentyFourHour == "11:00") {hourlyTime = "11am"}
+        else if(twentyFourHour == "12:00") {hourlyTime = "12am"}
+        else if(twentyFourHour == "13:00") {hourlyTime = "1pm"}
+        else if(twentyFourHour == "14:00") {hourlyTime = "2pm"}
+        else if(twentyFourHour == "15:00") {hourlyTime = "3pm"}
+        else if(twentyFourHour == "16:00") {hourlyTime = "4pm"}
+        else if(twentyFourHour == "17:00") {hourlyTime = "5pm"}
+        else if(twentyFourHour == "18:00") {hourlyTime = "6pm"}
+        else if(twentyFourHour == "19:00") {hourlyTime = "7pm"}
+        else if(twentyFourHour == "20:00") {hourlyTime = "8pm"}
+        else if(twentyFourHour == "21:00") {hourlyTime = "9pm"}
+        else if(twentyFourHour == "22:00") {hourlyTime = "10pm"}
+        else if(twentyFourHour == "23:00") {hourlyTime = "11pm"}
+
+        return hourlyTime
+    }
+
+    /**
+     * I function I took from https://stackoverflow.com/questions/47804422/converting-epoch-time-to-the-hour
+     * Converts the unix code into hourly figures.
+     * I then use my own function to turn it from 24 hour to
+     * am/pm for a better visual.
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun getHourlyTime(unixCode: Long): String? {
+        val timeOfDay: LocalTime = Instant.ofEpochSecond(unixCode)
+            .atOffset(ZoneOffset.UTC)
+            .toLocalTime()
+        val hourOfDay = timeOfDay.hour
+        println(hourOfDay)
+
+        return hourlyConvert(timeOfDay.toString())
+//        return timeOfDay.toString()
     }
 
     /**
