@@ -358,8 +358,9 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/clear_day" />
+                    app:srcCompat="@drawable/a01d" />
 
                 <ImageView
                     android:id="@+id/oneIcon"
@@ -369,7 +370,140 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="5dp"
-                    android:scaleType="center"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/twoIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/threeIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/fourIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/fiveIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/sixIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/sevenIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/eightIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/nineIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/tenIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/elevenIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@android:drawable/btn_star" />
+
+                <ImageView
+                    android:id="@+id/twelveIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerCrop"
                     app:srcCompat="@android:drawable/btn_star" />
             </TableRow>
 
@@ -553,22 +687,24 @@
 
                 <TextView
                     android:id="@+id/oneDay"
-                    android:layout_width="65dp"
+                    android:layout_width="91dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/nextDay"
                     android:textColor="#fff" />
 
-                <TextView
-                    android:id="@+id/oneWeather"
-                    android:layout_width="212dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/oneWeatherIcon"
-                    android:textAlignment="center"
-                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/dayOneIcon"
+                    android:layout_width="177dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/a01d" />
 
                 <TextView
                     android:id="@+id/oneHighTemp"
@@ -604,15 +740,17 @@
                     android:text="@string/twoDay"
                     android:textColor="#fff" />
 
-                <TextView
-                    android:id="@+id/twoWeather"
-                    android:layout_width="203dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/twoWeatherIcon"
-                    android:textAlignment="center"
-                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/dayTwoIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/a01d" />
 
                 <TextView
                     android:id="@+id/twoHighTemp"
@@ -649,15 +787,17 @@
                     android:text="@string/threeDay"
                     android:textColor="#fff" />
 
-                <TextView
-                    android:id="@+id/threeWeather"
-                    android:layout_width="203dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/threeWeatherIcon"
-                    android:textAlignment="center"
-                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/dayThreeIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/a01d" />
 
                 <TextView
                     android:id="@+id/threeHighTemp"
@@ -693,15 +833,17 @@
                     android:text="@string/fourDay"
                     android:textColor="#fff" />
 
-                <TextView
-                    android:id="@+id/fourWeather"
-                    android:layout_width="203dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/fourWeatherIcon"
-                    android:textAlignment="center"
-                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/dayFourIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/a01d" />
 
                 <TextView
                     android:id="@+id/fourHighTemp"
@@ -738,15 +880,17 @@
                     android:text="@string/fiveDay"
                     android:textColor="#fff" />
 
-                <TextView
-                    android:id="@+id/fiveWeather"
-                    android:layout_width="203dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/fiveWeatherIcon"
-                    android:textAlignment="center"
-                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/dayFiveIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/a01d" />
 
                 <TextView
                     android:id="@+id/fiveHighTemp"
@@ -783,15 +927,17 @@
                     android:text="@string/sixDay"
                     android:textColor="#fff" />
 
-                <TextView
-                    android:id="@+id/sixWeather"
-                    android:layout_width="203dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/sixWeatherIcon"
-                    android:textAlignment="center"
-                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/daySixIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/a01d" />
 
                 <TextView
                     android:id="@+id/sixHighTemp"
@@ -827,15 +973,17 @@
                     android:text="@string/sevenDay"
                     android:textColor="#fff" />
 
-                <TextView
-                    android:id="@+id/sevenWeather"
-                    android:layout_width="203dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/sevenWeatherIcon"
-                    android:textAlignment="center"
-                    android:textColor="#fff" />
+                <ImageView
+                    android:id="@+id/daySevenIcon"
+                    android:layout_width="45dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:contentDescription="@string/icon"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/a01d" />
 
                 <TextView
                     android:id="@+id/sevenHighTemp"

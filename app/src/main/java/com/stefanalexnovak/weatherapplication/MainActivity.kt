@@ -8,6 +8,7 @@ import okhttp3.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity() {
         val APIkey = "ee3cc93e43ef00b96a6bb4e56902d020"
 
         fetchJson()
+
+        populateMap()
     }
 
     private fun fetchJson() {
@@ -59,65 +62,78 @@ class MainActivity : AppCompatActivity() {
                     currentDayText.text = getDateDay(weatherData.current.dt)
 
                     nowTemp.text = kelvinToCelsius(weatherData.current.temp).toString()
+                    nowIcon.setImageResource(iconMap[weatherData.hourly[0].weather[0].icon]!!)
 
                     oneTemp.text = kelvinToCelsius(weatherData.hourly[1].temp).toString()
+                    oneIcon.setImageResource(iconMap[weatherData.hourly[1].weather[0].icon]!!)
 
                     twoTemp.text = kelvinToCelsius(weatherData.hourly[2].temp).toString()
+                    twoIcon.setImageResource(iconMap[weatherData.hourly[2].weather[0].icon]!!)
 
                     threeTemp.text = kelvinToCelsius(weatherData.hourly[3].temp).toString()
+                    threeIcon.setImageResource(iconMap[weatherData.hourly[3].weather[0].icon]!!)
 
                     fourTemp.text = kelvinToCelsius(weatherData.hourly[4].temp).toString()
+                    fourIcon.setImageResource(iconMap[weatherData.hourly[4].weather[0].icon]!!)
 
                     fiveTemp.text = kelvinToCelsius(weatherData.hourly[5].temp).toString()
+                    fiveIcon.setImageResource(iconMap[weatherData.hourly[5].weather[0].icon]!!)
 
                     sixTemp.text = kelvinToCelsius(weatherData.hourly[6].temp).toString()
+                    sixIcon.setImageResource(iconMap[weatherData.hourly[6].weather[0].icon]!!)
 
                     sevenTemp.text = kelvinToCelsius(weatherData.hourly[7].temp).toString()
+                    sevenIcon.setImageResource(iconMap[weatherData.hourly[7].weather[0].icon]!!)
 
                     eightTemp.text = kelvinToCelsius(weatherData.hourly[8].temp).toString()
+                    eightIcon.setImageResource(iconMap[weatherData.hourly[8].weather[0].icon]!!)
 
                     nineTemp.text = kelvinToCelsius(weatherData.hourly[9].temp).toString()
+                    nineIcon.setImageResource(iconMap[weatherData.hourly[9].weather[0].icon]!!)
 
                     tenTemp.text = kelvinToCelsius(weatherData.hourly[10].temp).toString()
+                    tenIcon.setImageResource(iconMap[weatherData.hourly[10].weather[0].icon]!!)
 
                     elevenTemp.text = kelvinToCelsius(weatherData.hourly[11].temp).toString()
+                    elevenIcon.setImageResource(iconMap[weatherData.hourly[11].weather[0].icon]!!)
 
                     twelveTemp.text = kelvinToCelsius(weatherData.hourly[12].temp).toString()
+                    twelveIcon.setImageResource(iconMap[weatherData.hourly[12].weather[0].icon]!!)
 
 
                     /////////////////////////Daily
                     oneDay.text = getNextDay(currentDayText.text.toString())
-                    oneWeather.text = weatherData.daily[1].weather[0].main
+                    dayOneIcon.setImageResource(iconMap[weatherData.daily[1].weather[0].icon]!!)
                     oneHighTemp.text = kelvinToCelsius(weatherData.daily[1].temp.max).toString()
                     oneLowTemp.text = kelvinToCelsius(weatherData.daily[1].temp.min).toString()
 
                     twoDay.text = getNextDay(oneDay.text.toString())
-                    twoWeather.text = weatherData.daily[2].weather[0].main
+                    dayTwoIcon.setImageResource(iconMap[weatherData.daily[2].weather[0].icon]!!)
                     twoHighTemp.text = kelvinToCelsius(weatherData.daily[2].temp.max).toString()
                     twoLowTemp.text = kelvinToCelsius(weatherData.daily[2].temp.min).toString()
 
                     threeDay.text = getNextDay(twoDay.text.toString())
-                    threeWeather.text = weatherData.daily[3].weather[0].main
+                    dayThreeIcon.setImageResource(iconMap[weatherData.daily[3].weather[0].icon]!!)
                     threeHighTemp.text = kelvinToCelsius(weatherData.daily[3].temp.max).toString()
                     threeLowTemp.text = kelvinToCelsius(weatherData.daily[3].temp.min).toString()
 
                     fourDay.text = getNextDay(threeDay.text.toString())
-                    fourWeather.text = weatherData.daily[4].weather[0].main
+                    dayFourIcon.setImageResource(iconMap[weatherData.daily[4].weather[0].icon]!!)
                     fourHighTemp.text = kelvinToCelsius(weatherData.daily[4].temp.max).toString()
                     fourLowTemp.text = kelvinToCelsius(weatherData.daily[4].temp.min).toString()
 
                     fiveDay.text = getNextDay(fourDay.text.toString())
-                    fiveWeather.text = weatherData.daily[5].weather[0].main
+                    dayFiveIcon.setImageResource(iconMap[weatherData.daily[5].weather[0].icon]!!)
                     fiveHighTemp.text = kelvinToCelsius(weatherData.daily[5].temp.max).toString()
                     fiveLowTemp.text = kelvinToCelsius(weatherData.daily[5].temp.min).toString()
 
                     sixDay.text = getNextDay(fiveDay.text.toString())
-                    sixWeather.text = weatherData.daily[6].weather[0].main
+                    daySixIcon.setImageResource(iconMap[weatherData.daily[6].weather[0].icon]!!)
                     sixHighTemp.text = kelvinToCelsius(weatherData.daily[6].temp.max).toString()
                     sixLowTemp.text = kelvinToCelsius(weatherData.daily[6].temp.min).toString()
 
                     sevenDay.text = getNextDay(sixDay.text.toString())
-                    sevenWeather.text = weatherData.daily[7].weather[0].main
+                    daySevenIcon.setImageResource(iconMap[weatherData.daily[7].weather[0].icon]!!)
                     sevenHighTemp.text = kelvinToCelsius(weatherData.daily[7].temp.max).toString()
                     sevenLowTemp.text = kelvinToCelsius(weatherData.daily[7].temp.min).toString()
 
@@ -174,6 +190,29 @@ class MainActivity : AppCompatActivity() {
      */
     fun kelvinToCelsius(kelvin: Double) : Int {
         return (kelvin - 273.15).roundToInt()
+    }
+
+    //Icon map
+    var iconMap = HashMap<String, Int>()
+    private fun populateMap() {
+        iconMap["01d"] = R.drawable.a01d
+        iconMap["01n"] = R.drawable.a01n
+        iconMap["02d"] = R.drawable.a02d
+        iconMap["02n"] = R.drawable.a02n
+        iconMap["03d"] = R.drawable.a03d
+        iconMap["03n"] = R.drawable.a03n
+        iconMap["04d"] = R.drawable.a04d
+        iconMap["04n"] = R.drawable.a04n
+        iconMap["09d"] = R.drawable.a09d
+        iconMap["09n"] = R.drawable.a09n
+        iconMap["10d"] = R.drawable.a10d
+        iconMap["10n"] = R.drawable.a10n
+        iconMap["11d"] = R.drawable.a11d
+        iconMap["11n"] = R.drawable.a11n
+        iconMap["13d"] = R.drawable.a13d
+        iconMap["13n"] = R.drawable.a13n
+        iconMap["50d"] = R.drawable.a50d
+        iconMap["50n"] = R.drawable.a50n
     }
 }
 

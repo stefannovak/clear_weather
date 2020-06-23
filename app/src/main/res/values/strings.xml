@@ -6,6 +6,7 @@
     <string name="dailyText">daily test</string>
     <string name="footerText">© Stefan Novak | 2020</string>
     <string name="weatherSummaryText">Sunny</string>
+    <string name="icon">icon</string>
 
 <!--    HOURLY WEATHER STRINGS-->
     <string name="nowHour">Now</string>
