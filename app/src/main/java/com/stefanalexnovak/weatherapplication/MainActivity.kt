@@ -1,40 +1,75 @@
 package com.stefanalexnovak.weatherapplication
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.preference.PreferenceManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneOffset
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
     private val locationRegex = "^.*\\/([^\\/]*)\$".toRegex()
+    private var lat: Double? = 0.0
+    private var lon: Double? = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        populateMap()
         val APIkey = "ee3cc93e43ef00b96a6bb4e56902d020"
 
         fetchJson()
 
-        populateMap()
+        val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+        pref.apply {
+            val cityName = cityText.text.toString()
+            val temp = tempText.text.toString()
+            cityText.text = cityName
+            tempText.text = temp
+        }
+    }
 
+    fun saveData(v: View) {
+        val pref = PreferenceManager.getDefaultSharedPreferences(this)
+        val editor = pref.edit()
+
+        editor.putString("city", cityText.text.toString()).putString("temp", tempText.text.toString()).apply()
     }
 
     private fun fetchJson() {
 
-        val url = "https://api.openweathermap.org/data/2.5/onecall?lat=51.51&lon=-0.19&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
+        val url =
+            "https://api.openweathermap.org/data/2.5/onecall?lat=51.51&lon=-0.19&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
+        val urlNewYork =
+            "https://api.openweathermap.org/data/2.5/onecall?lat=40.785091&lon=-73.968285&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
+        val urlLosAngeles =
+            "https://api.openweathermap.org/data/2.5/onecall?lat=34.0522&lon=-118.24&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
+        val urlLichfield =
+            "https://api.openweathermap.org/data/2.5/onecall?lat=52.6816&lon=-1.8317&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
 
         val request = Request.Builder().url(url).build()
 
@@ -52,6 +87,12 @@ class MainActivity : AppCompatActivity() {
 
                 val weatherData = gson.fromJson(body, WeatherData::class.java)
 
+                val gcd = Geocoder(this@MainActivity, Locale.getDefault())
+                val addresses = gcd.getFromLocation(weatherData.lat, weatherData.lon, 1)
+                val city = addresses[0].subAdminArea
+
+
+
                 runOnUiThread {
 
                     /**
@@ -59,57 +100,96 @@ class MainActivity : AppCompatActivity() {
                      * I am 100% this is very redundant code. Could be improved.
                      * But for now it works.
                      */
-                    temperatureSwitch.setOnClickListener{
-                        if(temperatureSwitch.isChecked) {
-                            tempText.text = kelvinToFahrenheit(weatherData.current.temp).toString() + "°"
+                    temperatureSwitch.setOnClickListener {
+                        if (temperatureSwitch.isChecked) {
+                            tempText.text =
+                                kelvinToFahrenheit(weatherData.current.temp).toString() + "°"
 
-                            oneHighTemp.text = kelvinToFahrenheit(weatherData.daily[1].temp.max).toString()
-                            twoHighTemp.text = kelvinToFahrenheit(weatherData.daily[2].temp.max).toString()
-                            threeHighTemp.text = kelvinToFahrenheit(weatherData.daily[3].temp.max).toString()
-                            fourHighTemp.text = kelvinToFahrenheit(weatherData.daily[4].temp.max).toString()
-                            fiveHighTemp.text = kelvinToFahrenheit(weatherData.daily[5].temp.max).toString()
-                            sixHighTemp.text = kelvinToFahrenheit(weatherData.daily[6].temp.max).toString()
-                            sevenHighTemp.text = kelvinToFahrenheit(weatherData.daily[7].temp.max).toString()
+                            oneHighTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[1].temp.max).toString()
+                            twoHighTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[2].temp.max).toString()
+                            threeHighTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[3].temp.max).toString()
+                            fourHighTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[4].temp.max).toString()
+                            fiveHighTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[5].temp.max).toString()
+                            sixHighTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[6].temp.max).toString()
+                            sevenHighTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[7].temp.max).toString()
 
-                            oneLowTemp.text = kelvinToFahrenheit(weatherData.daily[1].temp.max).toString()
-                            twoLowTemp.text = kelvinToFahrenheit(weatherData.daily[2].temp.min).toString()
-                            threeLowTemp.text = kelvinToFahrenheit(weatherData.daily[3].temp.min).toString()
-                            fourLowTemp.text = kelvinToFahrenheit(weatherData.daily[4].temp.min).toString()
-                            fiveLowTemp.text = kelvinToFahrenheit(weatherData.daily[5].temp.min).toString()
-                            sixLowTemp.text = kelvinToFahrenheit(weatherData.daily[6].temp.min).toString()
-                            sevenLowTemp.text = kelvinToFahrenheit(weatherData.daily[7].temp.min).toString()
+                            oneLowTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[1].temp.max).toString()
+                            twoLowTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[2].temp.min).toString()
+                            threeLowTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[3].temp.min).toString()
+                            fourLowTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[4].temp.min).toString()
+                            fiveLowTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[5].temp.min).toString()
+                            sixLowTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[6].temp.min).toString()
+                            sevenLowTemp.text =
+                                kelvinToFahrenheit(weatherData.daily[7].temp.min).toString()
 
                             nowTemp.text = kelvinToFahrenheit(weatherData.current.temp).toString()
                             oneTemp.text = kelvinToFahrenheit(weatherData.hourly[1].temp).toString()
                             twoTemp.text = kelvinToFahrenheit(weatherData.hourly[2].temp).toString()
-                            threeTemp.text = kelvinToFahrenheit(weatherData.hourly[3].temp).toString()
-                            fourTemp.text = kelvinToFahrenheit(weatherData.hourly[4].temp).toString()
-                            fiveTemp.text = kelvinToFahrenheit(weatherData.hourly[5].temp).toString()
+                            threeTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[3].temp).toString()
+                            fourTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[4].temp).toString()
+                            fiveTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[5].temp).toString()
                             sixTemp.text = kelvinToFahrenheit(weatherData.hourly[6].temp).toString()
-                            sevenTemp.text = kelvinToFahrenheit(weatherData.hourly[7].temp).toString()
-                            eightTemp.text = kelvinToFahrenheit(weatherData.hourly[8].temp).toString()
-                            nineTemp.text = kelvinToFahrenheit(weatherData.hourly[9].temp).toString()
-                            tenTemp.text = kelvinToFahrenheit(weatherData.hourly[10].temp).toString()
-                            elevenTemp.text = kelvinToFahrenheit(weatherData.hourly[11].temp).toString()
-                            twelveTemp.text = kelvinToFahrenheit(weatherData.hourly[12].temp).toString()
+                            sevenTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[7].temp).toString()
+                            eightTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[8].temp).toString()
+                            nineTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[9].temp).toString()
+                            tenTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[10].temp).toString()
+                            elevenTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[11].temp).toString()
+                            twelveTemp.text =
+                                kelvinToFahrenheit(weatherData.hourly[12].temp).toString()
                         } else {
-                            tempText.text = kelvinToCelsius(weatherData.current.temp).toString() + "°"
+                            tempText.text =
+                                kelvinToCelsius(weatherData.current.temp).toString() + "°"
 
-                            oneHighTemp.text = kelvinToCelsius(weatherData.daily[1].temp.max).toString()
-                            twoHighTemp.text = kelvinToCelsius(weatherData.daily[2].temp.max).toString()
-                            threeHighTemp.text = kelvinToCelsius(weatherData.daily[3].temp.max).toString()
-                            fourHighTemp.text = kelvinToCelsius(weatherData.daily[4].temp.max).toString()
-                            fiveHighTemp.text = kelvinToCelsius(weatherData.daily[5].temp.max).toString()
-                            sixHighTemp.text = kelvinToCelsius(weatherData.daily[6].temp.max).toString()
-                            sevenHighTemp.text = kelvinToCelsius(weatherData.daily[7].temp.max).toString()
+                            oneHighTemp.text =
+                                kelvinToCelsius(weatherData.daily[1].temp.max).toString()
+                            twoHighTemp.text =
+                                kelvinToCelsius(weatherData.daily[2].temp.max).toString()
+                            threeHighTemp.text =
+                                kelvinToCelsius(weatherData.daily[3].temp.max).toString()
+                            fourHighTemp.text =
+                                kelvinToCelsius(weatherData.daily[4].temp.max).toString()
+                            fiveHighTemp.text =
+                                kelvinToCelsius(weatherData.daily[5].temp.max).toString()
+                            sixHighTemp.text =
+                                kelvinToCelsius(weatherData.daily[6].temp.max).toString()
+                            sevenHighTemp.text =
+                                kelvinToCelsius(weatherData.daily[7].temp.max).toString()
 
-                            oneLowTemp.text = kelvinToCelsius(weatherData.daily[1].temp.max).toString()
-                            twoLowTemp.text = kelvinToCelsius(weatherData.daily[2].temp.min).toString()
-                            threeLowTemp.text = kelvinToCelsius(weatherData.daily[3].temp.min).toString()
-                            fourLowTemp.text = kelvinToCelsius(weatherData.daily[4].temp.min).toString()
-                            fiveLowTemp.text = kelvinToCelsius(weatherData.daily[5].temp.min).toString()
-                            sixLowTemp.text = kelvinToCelsius(weatherData.daily[6].temp.min).toString()
-                            sevenLowTemp.text = kelvinToCelsius(weatherData.daily[7].temp.min).toString()
+                            oneLowTemp.text =
+                                kelvinToCelsius(weatherData.daily[1].temp.max).toString()
+                            twoLowTemp.text =
+                                kelvinToCelsius(weatherData.daily[2].temp.min).toString()
+                            threeLowTemp.text =
+                                kelvinToCelsius(weatherData.daily[3].temp.min).toString()
+                            fourLowTemp.text =
+                                kelvinToCelsius(weatherData.daily[4].temp.min).toString()
+                            fiveLowTemp.text =
+                                kelvinToCelsius(weatherData.daily[5].temp.min).toString()
+                            sixLowTemp.text =
+                                kelvinToCelsius(weatherData.daily[6].temp.min).toString()
+                            sevenLowTemp.text =
+                                kelvinToCelsius(weatherData.daily[7].temp.min).toString()
 
                             nowTemp.text = kelvinToCelsius(weatherData.current.temp).toString()
                             oneTemp.text = kelvinToCelsius(weatherData.hourly[1].temp).toString()
@@ -122,14 +202,16 @@ class MainActivity : AppCompatActivity() {
                             eightTemp.text = kelvinToCelsius(weatherData.hourly[8].temp).toString()
                             nineTemp.text = kelvinToCelsius(weatherData.hourly[9].temp).toString()
                             tenTemp.text = kelvinToCelsius(weatherData.hourly[10].temp).toString()
-                            elevenTemp.text = kelvinToCelsius(weatherData.hourly[11].temp).toString()
-                            twelveTemp.text = kelvinToCelsius(weatherData.hourly[12].temp).toString()
+                            elevenTemp.text =
+                                kelvinToCelsius(weatherData.hourly[11].temp).toString()
+                            twelveTemp.text =
+                                kelvinToCelsius(weatherData.hourly[12].temp).toString()
                         }
                     }
 
                     //Fill out info from top to bottom.
                     //Top
-                    cityText.text = getLocalLocation(weatherData.timezone)
+                    cityText.text = city
                     weatherSummaryText.text = weatherData.current.weather[0].description
                     tempText.text = kelvinToCelsius(weatherData.current.temp).toString() + "°"
 
@@ -235,39 +317,66 @@ class MainActivity : AppCompatActivity() {
     /**
      * Uses Regex to get the word after a "/", using the timezone info from WeatherData.
      */
-    fun getLocalLocation(timezoneString: String) : String {
+    fun getLocalLocation(timezoneString: String): String {
         return locationRegex.matchEntire(timezoneString)?.groups?.get(1)?.value.toString()
+
+
     }
 
     /**
      * Converts 24 hour to 12 hour
      */
-    private fun hourlyConvert(twentyFourHour: String) : String {
+    private fun hourlyConvert(twentyFourHour: String): String {
         var hourlyTime = ""
-        if(twentyFourHour == "00:00") {hourlyTime = "12am"}
-        else if(twentyFourHour == "01:00") {hourlyTime = "1am"}
-        else if(twentyFourHour == "02:00") {hourlyTime = "2am"}
-        else if(twentyFourHour == "03:00") {hourlyTime = "3am"}
-        else if(twentyFourHour == "04:00") {hourlyTime = "4am"}
-        else if(twentyFourHour == "05:00") {hourlyTime = "5am"}
-        else if(twentyFourHour == "06:00") {hourlyTime = "6am"}
-        else if(twentyFourHour == "07:00") {hourlyTime = "7am"}
-        else if(twentyFourHour == "08:00") {hourlyTime = "8am"}
-        else if(twentyFourHour == "09:00") {hourlyTime = "9am"}
-        else if(twentyFourHour == "10:00") {hourlyTime = "10am"}
-        else if(twentyFourHour == "11:00") {hourlyTime = "11am"}
-        else if(twentyFourHour == "12:00") {hourlyTime = "12am"}
-        else if(twentyFourHour == "13:00") {hourlyTime = "1pm"}
-        else if(twentyFourHour == "14:00") {hourlyTime = "2pm"}
-        else if(twentyFourHour == "15:00") {hourlyTime = "3pm"}
-        else if(twentyFourHour == "16:00") {hourlyTime = "4pm"}
-        else if(twentyFourHour == "17:00") {hourlyTime = "5pm"}
-        else if(twentyFourHour == "18:00") {hourlyTime = "6pm"}
-        else if(twentyFourHour == "19:00") {hourlyTime = "7pm"}
-        else if(twentyFourHour == "20:00") {hourlyTime = "8pm"}
-        else if(twentyFourHour == "21:00") {hourlyTime = "9pm"}
-        else if(twentyFourHour == "22:00") {hourlyTime = "10pm"}
-        else if(twentyFourHour == "23:00") {hourlyTime = "11pm"}
+        if (twentyFourHour == "00:00") {
+            hourlyTime = "12am"
+        } else if (twentyFourHour == "01:00") {
+            hourlyTime = "1am"
+        } else if (twentyFourHour == "02:00") {
+            hourlyTime = "2am"
+        } else if (twentyFourHour == "03:00") {
+            hourlyTime = "3am"
+        } else if (twentyFourHour == "04:00") {
+            hourlyTime = "4am"
+        } else if (twentyFourHour == "05:00") {
+            hourlyTime = "5am"
+        } else if (twentyFourHour == "06:00") {
+            hourlyTime = "6am"
+        } else if (twentyFourHour == "07:00") {
+            hourlyTime = "7am"
+        } else if (twentyFourHour == "08:00") {
+            hourlyTime = "8am"
+        } else if (twentyFourHour == "09:00") {
+            hourlyTime = "9am"
+        } else if (twentyFourHour == "10:00") {
+            hourlyTime = "10am"
+        } else if (twentyFourHour == "11:00") {
+            hourlyTime = "11am"
+        } else if (twentyFourHour == "12:00") {
+            hourlyTime = "12am"
+        } else if (twentyFourHour == "13:00") {
+            hourlyTime = "1pm"
+        } else if (twentyFourHour == "14:00") {
+            hourlyTime = "2pm"
+        } else if (twentyFourHour == "15:00") {
+            hourlyTime = "3pm"
+        } else if (twentyFourHour == "16:00") {
+            hourlyTime = "4pm"
+        } else if (twentyFourHour == "17:00") {
+            hourlyTime = "5pm"
+        } else if (twentyFourHour == "18:00") {
+            hourlyTime = "6pm"
+        } else if (twentyFourHour == "19:00") {
+            hourlyTime = "7pm"
+        } else if (twentyFourHour == "20:00") {
+            hourlyTime = "8pm"
+        } else if (twentyFourHour == "21:00") {
+            hourlyTime = "9pm"
+        } else if (twentyFourHour == "22:00") {
+            hourlyTime = "10pm"
+        } else if (twentyFourHour == "23:00") {
+            hourlyTime = "11pm"
+        }
 
         return hourlyTime
     }
@@ -306,15 +415,23 @@ class MainActivity : AppCompatActivity() {
      * Uses the current day to return the next days
      * for the weekly forecast
      */
-    private fun getNextDay(day: String) : String {
+    private fun getNextDay(day: String): String {
         var nextDay = "Test"
-        if(day == "Monday") {nextDay = "Tuesday"}
-        else if(day == "Tuesday") {nextDay = "Wednesday"}
-        else if(day == "Wednesday") {nextDay = "Thursday"}
-        else if(day == "Thursday") {nextDay = "Friday"}
-        else if(day == "Friday") {nextDay = "Saturday"}
-        else if(day == "Saturday") {nextDay = "Sunday"}
-        else if(day == "Sunday") {nextDay = "Monday"}
+        if (day == "Monday") {
+            nextDay = "Tuesday"
+        } else if (day == "Tuesday") {
+            nextDay = "Wednesday"
+        } else if (day == "Wednesday") {
+            nextDay = "Thursday"
+        } else if (day == "Thursday") {
+            nextDay = "Friday"
+        } else if (day == "Friday") {
+            nextDay = "Saturday"
+        } else if (day == "Saturday") {
+            nextDay = "Sunday"
+        } else if (day == "Sunday") {
+            nextDay = "Monday"
+        }
 
         return nextDay
     }
@@ -322,14 +439,14 @@ class MainActivity : AppCompatActivity() {
     /**
      * Converts kelvin to fahrenheit, rounds it to a whole number
      */
-    fun kelvinToFahrenheit(kelvin: Double) : Int {
+    fun kelvinToFahrenheit(kelvin: Double): Int {
         return ((kelvin * 1.8) - 459.67).roundToInt()
     }
 
     /**
      * converts kelvin to celsius, rounded to a whole number
      */
-    fun kelvinToCelsius(kelvin: Double) : Int {
+    fun kelvinToCelsius(kelvin: Double): Int {
         return (kelvin - 273.15).roundToInt()
     }
 
@@ -355,6 +472,7 @@ class MainActivity : AppCompatActivity() {
         iconMap["50d"] = R.drawable.a50d
         iconMap["50n"] = R.drawable.a50n
     }
+
 }
 
 data class WeatherData(val lat: Double, val lon: Double, val timezone: String, val timezone_offset: Long,
