@@ -49,6 +49,10 @@ class MainActivity : AppCompatActivity() {
         getLocation()
     }
 
+    private fun returnLocation() : Pair<Double, Double> {
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun getLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -68,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 println("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
             } else {
                 println("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY AGAINNNNNNNNNNNNNNNNNNNNNN")
-                //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), COARSE_REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), COARSE_REQUEST_CODE)
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_REQUEST_CODE)
             }
         }
@@ -76,18 +80,22 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                // Got last known location. In some rare situations this can be null.
-                val lat = location?.latitude
-                val lon = location?.longitude
-                println("THE LATITUDE IS: $lat\n\n THE LONGITUDE IS: $lon")
+        if(requestCode == FINE_REQUEST_CODE && requestCode == COARSE_REQUEST_CODE) {
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+                fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                    // Got last known location. In some rare situations this can be null.
+                    val lat = location?.latitude
+                    val lon = location?.longitude
+                    println("THE LATITUDE IS: $lat\n\n THE LONGITUDE IS: $lon")
+                }
+            } else {
+                Toast.makeText(this, "Permission was not granted.", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(this, "Permission was not granted.", Toast.LENGTH_SHORT).show()
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            }
     }
 
     private fun fetchJson() {
