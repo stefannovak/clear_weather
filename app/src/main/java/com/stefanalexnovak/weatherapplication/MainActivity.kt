@@ -7,57 +7,87 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneOffset
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
     private val locationRegex = "^.*\\/([^\\/]*)\$".toRegex()
-    private var lat: Double? = 0.0
-    private var lon: Double? = 0.0
+//    private var lat: Double? = 0.0
+//    private var lon: Double? = 0.0
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    companion object {
+        const val COARSE_REQUEST_CODE = 1
+        const val FINE_REQUEST_CODE = 2
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         populateMap()
-        val APIkey = "ee3cc93e43ef00b96a6bb4e56902d020"
 
         fetchJson()
 
-        val pref = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
-        pref.apply {
-            val cityName = cityText.text.toString()
-            val temp = tempText.text.toString()
-            cityText.text = cityName
-            tempText.text = temp
+        getLocation()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+                // Got last known location. In some rare situations this can be null.
+                val lat = location?.latitude
+                val lon = location?.longitude
+                println("THE LATITUDE IS: $lat\n\n THE LONGITUDE IS: $lon")
+            }
+        } else {
+            if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) && shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Toast.makeText(this,"Location permission is required to get your local weather.", Toast.LENGTH_SHORT).show()
+
+                println("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+            } else {
+                println("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY AGAINNNNNNNNNNNNNNNNNNNNNN")
+                //ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), COARSE_REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_REQUEST_CODE)
+            }
         }
     }
 
-    fun saveData(v: View) {
-        val pref = PreferenceManager.getDefaultSharedPreferences(this)
-        val editor = pref.edit()
-
-        editor.putString("city", cityText.text.toString()).putString("temp", tempText.text.toString()).apply()
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                // Got last known location. In some rare situations this can be null.
+                val lat = location?.latitude
+                val lon = location?.longitude
+                println("THE LATITUDE IS: $lat\n\n THE LONGITUDE IS: $lon")
+            }
+        } else {
+            Toast.makeText(this, "Permission was not granted.", Toast.LENGTH_SHORT).show()
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun fetchJson() {
@@ -313,15 +343,6 @@ class MainActivity : AppCompatActivity() {
 
 
     } //end of fetchJson()
-
-    /**
-     * Uses Regex to get the word after a "/", using the timezone info from WeatherData.
-     */
-    fun getLocalLocation(timezoneString: String): String {
-        return locationRegex.matchEntire(timezoneString)?.groups?.get(1)?.value.toString()
-
-
-    }
 
     /**
      * Converts 24 hour to 12 hour
