@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 //    private var lat: Double? = 0.0
 //    private var lon: Double? = 0.0
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    public var localUrlString = ""
 
     companion object {
         const val COARSE_REQUEST_CODE = 1
@@ -47,10 +48,29 @@ class MainActivity : AppCompatActivity() {
         fetchJson()
 
         getLocation()
+
+        println("!!!!! $localUrlString !!!!!!!!!??£")
     }
 
-    private fun returnLocation() : Pair<Double, Double> {
+    private fun setLocalUrl(lat: Double?, lon: Double?) : String {
+        println("THE URL STRING FOR THE LOCAL LOCATION IS https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020")
+        return "https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
+    }
 
+    @SuppressLint("MissingPermission")
+    private fun returnLocation() {
+        var lat : Double? = 0.0
+        var lon : Double? = 0.0
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+            // Got last known location. In some rare situations this can be null.
+            lat = location?.latitude
+            lon = location?.longitude
+//            localUrlString = setLocalUrl(lat, lon)
+//            print(localUrlString)
+            println("THE LATItttttttttttttttttttttttttttttTUDE IS: $lat\n\n THE LONGggggggggggggggggITUDE IS: $lon")
+            localUrlString = "https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -58,20 +78,11 @@ class MainActivity : AppCompatActivity() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
-                // Got last known location. In some rare situations this can be null.
-                val lat = location?.latitude
-                val lon = location?.longitude
-                println("THE LATITUDE IS: $lat\n\n THE LONGITUDE IS: $lon")
-            }
+            returnLocation()
         } else {
             if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) && shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
                 Toast.makeText(this,"Location permission is required to get your local weather.", Toast.LENGTH_SHORT).show()
-
-                println("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
             } else {
-                println("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY AGAINNNNNNNNNNNNNNNNNNNNNN")
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), COARSE_REQUEST_CODE)
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_REQUEST_CODE)
             }
@@ -81,15 +92,8 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if(requestCode == FINE_REQUEST_CODE && requestCode == COARSE_REQUEST_CODE) {
-
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-                fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                    // Got last known location. In some rare situations this can be null.
-                    val lat = location?.latitude
-                    val lon = location?.longitude
-                    println("THE LATITUDE IS: $lat\n\n THE LONGITUDE IS: $lon")
-                }
+                returnLocation()
             } else {
                 Toast.makeText(this, "Permission was not granted.", Toast.LENGTH_SHORT).show()
             }
