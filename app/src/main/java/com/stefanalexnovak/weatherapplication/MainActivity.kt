@@ -23,11 +23,11 @@ import java.time.LocalTime
 import java.time.ZoneOffset
 import java.util.*
 import kotlin.collections.HashMap
+import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
-    private val locationRegex = "^.*\\/([^\\/]*)\$".toRegex()
 //    private var lat: Double? = 0.0
 //    private var lon: Double? = 0.0
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -49,13 +49,13 @@ class MainActivity : AppCompatActivity() {
 
         getLocation()
 
-        println("!!!!! $localUrlString !!!!!!!!!??£")
     }
 
     private fun setLocalUrl(lat: Double?, lon: Double?) : String {
         println("THE URL STRING FOR THE LOCAL LOCATION IS https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020")
         return "https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
     }
+
 
     @SuppressLint("MissingPermission")
     private fun returnLocation() {
@@ -98,8 +98,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Permission was not granted.", Toast.LENGTH_SHORT).show()
             }
         } else {
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-            }
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
     }
 
     private fun fetchJson() {
@@ -132,8 +132,6 @@ class MainActivity : AppCompatActivity() {
                 val gcd = Geocoder(this@MainActivity, Locale.getDefault())
                 val addresses = gcd.getFromLocation(weatherData.lat, weatherData.lon, 1)
                 val city = addresses[0].subAdminArea
-
-
 
                 runOnUiThread {
 
@@ -386,7 +384,7 @@ class MainActivity : AppCompatActivity() {
         } else if (twentyFourHour == "11:00") {
             hourlyTime = "11am"
         } else if (twentyFourHour == "12:00") {
-            hourlyTime = "12am"
+            hourlyTime = "12pm"
         } else if (twentyFourHour == "13:00") {
             hourlyTime = "1pm"
         } else if (twentyFourHour == "14:00") {
