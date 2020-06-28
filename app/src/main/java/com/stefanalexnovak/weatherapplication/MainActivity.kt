@@ -2,6 +2,7 @@ package com.stefanalexnovak.weatherapplication
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
@@ -12,10 +13,11 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 import com.google.gson.GsonBuilder
+import com.stefanalexnovak.weatherapplication.location.DefaultLocationGetter
+import com.stefanalexnovak.weatherapplication.location.LocationGetter
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -25,7 +27,6 @@ import java.time.LocalTime
 import java.time.ZoneOffset
 import java.util.*
 import kotlin.collections.HashMap
-import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
@@ -35,6 +36,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     public var localUrlString = ""
     private lateinit var locationCallback : LocationCallback
+    private lateinit var locationGetter: LocationGetter
 
     companion object {
         const val COARSE_REQUEST_CODE = 1
@@ -46,12 +48,23 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//        populateMap()
-//
-//        fetchJson()
-//
-        getLocation()
 
+        locationGetter = DefaultLocationGetter()
+
+        locationGetter.hasPermissions(this@MainActivity) { granted ->
+            if(granted) {
+                initLocation()
+            } else {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MainActivity.FINE_REQUEST_CODE)
+            }
+        }
+    }
+
+    private fun initLocation() {
+        populateMap()
+        locationGetter.getLocation { location ->
+            fetchJson()
+        }
     }
 
     private fun setLocalUrl(lat: Double?, lon: Double?) : String {
@@ -99,37 +112,16 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
         println("CONNECTION HAS BEEN SUSPENDED")
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-//        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
-        {
-            returnLocation()
-        } else {
-            if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                println("PERMISSION DENIED")
-                Toast.makeText(this,"Location permission is required to get your local weather.", Toast.LENGTH_SHORT).show()
-            } else {
-                //DONT KNOW IF I CAN REQUEST 2 PERMISSIONS
-                println("PERMISSION DENIEDDDDDD")
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_REQUEST_CODE)
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_REQUEST_CODE)
-            }
-        }
-    }
-
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if(requestCode == FINE_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                returnLocation()
-            } else {
-                println("WHERE ART THOU PERMISSION")
-                Toast.makeText(this, "Permission was not granted.", Toast.LENGTH_SHORT).show()
+        locationGetter.hasPermissions(this) {granted ->
+            if(!granted) {
+                Toast.makeText(this,"Enable locations in settings.", Toast.LENGTH_LONG).show()
+                return@hasPermissions
             }
-        } else {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            initLocation()
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun fetchJson() {
