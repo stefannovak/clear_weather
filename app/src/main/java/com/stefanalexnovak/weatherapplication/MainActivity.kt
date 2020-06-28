@@ -7,12 +7,14 @@ import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.*
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
@@ -26,12 +28,13 @@ import kotlin.collections.HashMap
 import kotlinx.coroutines.*
 import kotlin.math.roundToInt
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
     private val client = OkHttpClient()
 //    private var lat: Double? = 0.0
 //    private var lon: Double? = 0.0
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     public var localUrlString = ""
+    private lateinit var locationCallback : LocationCallback
 
     companion object {
         const val COARSE_REQUEST_CODE = 1
@@ -43,10 +46,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        populateMap()
-
-        fetchJson()
-
+//        populateMap()
+//
+//        fetchJson()
+//
         getLocation()
 
     }
@@ -56,45 +59,72 @@ class MainActivity : AppCompatActivity() {
         return "https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
     }
 
-
     @SuppressLint("MissingPermission")
     private fun returnLocation() {
-        var lat : Double? = 0.0
-        var lon : Double? = 0.0
+        GoogleApiClient.Builder(this)
+            .addApi(LocationServices.API)
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener { result -> println("$result drlkjgHDFGJHD;FGLKJHDF;LGKSHJtherlikuthrtkjhgrlktjhdfkljhkfjlsdh") }
+            .build()
+            .connect()
+
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                println("HELOOOOOOOOOOOOOOOOOOOOOOOOOO")
+                println(locationResult)
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onConnected(p0: Bundle?) {
+        var locationRequest = LocationRequest.create()
+        locationRequest.numUpdates = 100
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 2000
+        locationRequest.fastestInterval = 1000
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
         fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
             // Got last known location. In some rare situations this can be null.
-            lat = location?.latitude
-            lon = location?.longitude
-//            localUrlString = setLocalUrl(lat, lon)
-//            print(localUrlString)
+            var lat : Double? = location?.latitude
+            var lon : Double? = location?.longitude
             println("THE LATItttttttttttttttttttttttttttttTUDE IS: $lat\n\n THE LONGggggggggggggggggITUDE IS: $lon")
             localUrlString = "https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
         }
     }
 
+    override fun onConnectionSuspended(p0: Int) {
+            TODO("Not yet implemented")
+        println("CONNECTION HAS BEEN SUSPENDED")
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+//        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
         {
             returnLocation()
         } else {
-            if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION) && shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            if(shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                println("PERMISSION DENIED")
                 Toast.makeText(this,"Location permission is required to get your local weather.", Toast.LENGTH_SHORT).show()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), COARSE_REQUEST_CODE)
+                //DONT KNOW IF I CAN REQUEST 2 PERMISSIONS
+                println("PERMISSION DENIEDDDDDD")
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_REQUEST_CODE)
+//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), FINE_REQUEST_CODE)
             }
         }
     }
 
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if(requestCode == FINE_REQUEST_CODE && requestCode == COARSE_REQUEST_CODE) {
+        if(requestCode == FINE_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 returnLocation()
             } else {
+                println("WHERE ART THOU PERMISSION")
                 Toast.makeText(this, "Permission was not granted.", Toast.LENGTH_SHORT).show()
             }
         } else {
@@ -435,7 +465,7 @@ class MainActivity : AppCompatActivity() {
     private fun getDateDay(unixCode: Long): String? {
         try {
             val sdf = SimpleDateFormat("EEEE")
-            val netDate = Date(unixCode.toLong() * 1000)
+            val netDate = Date(unixCode * 1000)
             return sdf.format(netDate)
         } catch (e: Exception) {
             return e.toString()
@@ -503,6 +533,7 @@ class MainActivity : AppCompatActivity() {
         iconMap["50d"] = R.drawable.a50d
         iconMap["50n"] = R.drawable.a50n
     }
+
 
 }
 
