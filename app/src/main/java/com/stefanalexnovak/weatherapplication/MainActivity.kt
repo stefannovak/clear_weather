@@ -2,22 +2,17 @@ package com.stefanalexnovak.weatherapplication
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.pm.PackageManager
 import android.location.Geocoder
-import android.location.Location
 import android.os.Build
 import android.os.Bundle
-import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.*
 import com.google.gson.GsonBuilder
 import com.stefanalexnovak.weatherapplication.location.DefaultLocationGetter
 import com.stefanalexnovak.weatherapplication.location.LocationGetter
+import com.stefanalexnovak.weatherapplication.location.MockLocationGetter
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -29,33 +24,23 @@ import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.roundToInt
 
-class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
+class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
-//    private var lat: Double? = 0.0
-//    private var lon: Double? = 0.0
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    public var localUrlString = ""
-    private lateinit var locationCallback : LocationCallback
     private lateinit var locationGetter: LocationGetter
-
-    companion object {
-        const val COARSE_REQUEST_CODE = 1
-        const val FINE_REQUEST_CODE = 2
-    }
-
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        locationGetter = DefaultLocationGetter()
+        locationGetter = DefaultLocationGetter(this)
+//        locationGetter = MockLocationGetter()
 
         locationGetter.hasPermissions(this@MainActivity) { granted ->
             if(granted) {
                 initLocation()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), MainActivity.FINE_REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
             }
         }
     }
@@ -63,53 +48,8 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
     private fun initLocation() {
         populateMap()
         locationGetter.getLocation { location ->
-            fetchJson()
+            fetchJson(location)
         }
-    }
-
-    private fun setLocalUrl(lat: Double?, lon: Double?) : String {
-        println("THE URL STRING FOR THE LOCAL LOCATION IS https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020")
-        return "https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun returnLocation() {
-        GoogleApiClient.Builder(this)
-            .addApi(LocationServices.API)
-            .addConnectionCallbacks(this)
-            .addOnConnectionFailedListener { result -> println("$result drlkjgHDFGJHD;FGLKJHDF;LGKSHJtherlikuthrtkjhgrlktjhdfkljhkfjlsdh") }
-            .build()
-            .connect()
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult?) {
-                println("HELOOOOOOOOOOOOOOOOOOOOOOOOOO")
-                println(locationResult)
-            }
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onConnected(p0: Bundle?) {
-        var locationRequest = LocationRequest.create()
-        locationRequest.numUpdates = 100
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest.interval = 2000
-        locationRequest.fastestInterval = 1000
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
-            // Got last known location. In some rare situations this can be null.
-            var lat : Double? = location?.latitude
-            var lon : Double? = location?.longitude
-            println("THE LATItttttttttttttttttttttttttttttTUDE IS: $lat\n\n THE LONGggggggggggggggggITUDE IS: $lon")
-            localUrlString = "https://api.openweathermap.org/data/2.5/onecall?lat=$lat&lon=$lon&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
-        }
-    }
-
-    override fun onConnectionSuspended(p0: Int) {
-            TODO("Not yet implemented")
-        println("CONNECTION HAS BEEN SUSPENDED")
     }
 
     @SuppressLint("MissingPermission")
@@ -124,7 +64,10 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    private fun fetchJson() {
+    private fun fetchJson(location: com.stefanalexnovak.weatherapplication.location.Location) {
+
+        var myUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=${location.latitude}&lon=${location.longitude}&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
+
 
         val url =
             "https://api.openweathermap.org/data/2.5/onecall?lat=51.51&lon=-0.19&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
@@ -135,7 +78,7 @@ class MainActivity : AppCompatActivity(), GoogleApiClient.ConnectionCallbacks {
         val urlLichfield =
             "https://api.openweathermap.org/data/2.5/onecall?lat=52.6816&lon=-1.8317&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
 
-        val request = Request.Builder().url(url).build()
+        val request = Request.Builder().url(myUrl).build()
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
