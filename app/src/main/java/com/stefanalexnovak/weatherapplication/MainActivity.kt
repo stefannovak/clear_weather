@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.viewpager2.widget.ViewPager2
 import com.google.gson.GsonBuilder
 import com.stefanalexnovak.weatherapplication.location.DefaultLocationGetter
 import com.stefanalexnovak.weatherapplication.location.LocationGetter
-import com.stefanalexnovak.weatherapplication.location.MockLocationGetter
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -23,6 +23,8 @@ import java.time.ZoneOffset
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.roundToInt
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
@@ -42,6 +44,17 @@ class MainActivity : AppCompatActivity() {
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
             }
+        }
+
+//        val weatherAdaptor = WeatherAdaptor(this, 5)
+//        weatherViewPager.adapter = weatherAdaptor
+//        weatherViewPager.registerOnPageChangeCallback(weatherPageCallback)
+    }
+
+    var weatherPageCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            Toast.makeText(this@MainActivity, "Selected position: ${position}",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -213,6 +226,7 @@ class MainActivity : AppCompatActivity() {
                                 kelvinToCelsius(weatherData.hourly[12].temp).toString()
                         }
                     }
+
 
                     //Fill out info from top to bottom.
                     //Top
