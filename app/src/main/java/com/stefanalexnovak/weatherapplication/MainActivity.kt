@@ -46,8 +46,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        createNotificationChannel()
-
         locationGetter = DefaultLocationGetter(this)
 //        locationGetter = MockLocationGetter()
 
@@ -57,15 +55,27 @@ class MainActivity : AppCompatActivity() {
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
             }
-
-            notifications()
         }
 
 //        val weatherAdaptor = WeatherAdaptor(this, 5)
 //        weatherViewPager.adapter = weatherAdaptor
 //        weatherViewPager.registerOnPageChangeCallback(weatherPageCallback)
+
+        newLocationButton.setOnClickListener {
+            locationMenu()
+        }
     }
 
+    private fun locationMenu() {
+//        Toast.makeText(this, "Ayo did this work", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, CitySelector::class.java)
+        startActivity(intent)
+    }
+
+    /**
+     * My notification channel function
+     * IMPORTANCE_LOW sets the silent notification.
+     */
     private fun createNotificationChannel() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channelId)
@@ -80,6 +90,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * sets up the notification to be clickable, builds the notification
+     */
     private fun notifications() {
         val intent = Intent(this, MainActivity::class.java)
         val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
