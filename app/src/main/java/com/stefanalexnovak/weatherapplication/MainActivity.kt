@@ -2,14 +2,13 @@ package com.stefanalexnovak.weatherapplication
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
+import android.view.Window
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +29,6 @@ import java.time.ZoneOffset
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.roundToInt
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -61,15 +59,22 @@ class MainActivity : AppCompatActivity() {
 //        weatherViewPager.adapter = weatherAdaptor
 //        weatherViewPager.registerOnPageChangeCallback(weatherPageCallback)
 
-        newLocationButton.setOnClickListener {
-            locationMenu()
-        }
     }
 
     private fun locationMenu() {
 //        Toast.makeText(this, "Ayo did this work", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this, CitySelector::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, CitySelector::class.java)
+//        startActivity(intent)
+
+        showCityDialog(this, "Hi")
+    }
+
+    private fun showCityDialog(activity: Activity, message: String) {
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.second_fragment)
+
+        dialog.show()
     }
 
     /**
@@ -546,7 +551,6 @@ class MainActivity : AppCompatActivity() {
         iconMap["50d"] = R.drawable.a50d
         iconMap["50n"] = R.drawable.a50n
     }
-
 
 }
 

@@ -67,4 +67,13 @@
     <string name="channelId">Channel Name</string>
     <string name="channelString">Channel String</string>
 
+    <!--    //Dropdown Menu-->
+    <string-array name="city_list">
+        <item>London</item>
+        <item>Lichfield</item>
+        <item>Los Angeles</item>
+        <item>New York</item>
+        <item>Tokyo</item>
+    </string-array>
+
 </resources>
