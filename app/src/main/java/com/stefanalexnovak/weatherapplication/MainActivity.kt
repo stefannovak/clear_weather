@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.channelId)
             val descriptionText = getString(R.string.channelString)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_LOW
             val channel = NotificationChannel(R.string.channelId.toString(), name, importance).apply {
                 description = descriptionText
             }
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             .setSmallIcon(R.drawable.a50n)
             .setContentText("Tomorrows weather")
             .setContentText("Highs of ${oneHighTemp.text}, ${weatherSummaryText.text}")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
         //Set the intent that will fire when the user taps the notification
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
