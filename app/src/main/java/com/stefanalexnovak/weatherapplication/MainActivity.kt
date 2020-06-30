@@ -2,6 +2,11 @@ package com.stefanalexnovak.weatherapplication
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +14,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.gson.GsonBuilder
 import com.stefanalexnovak.weatherapplication.location.DefaultLocationGetter
@@ -30,10 +37,16 @@ class MainActivity : AppCompatActivity() {
     private val client = OkHttpClient()
     private lateinit var locationGetter: LocationGetter
 
+    companion object {
+        const val notificationId = 1
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        createNotificationChannel()
 
         locationGetter = DefaultLocationGetter(this)
 //        locationGetter = MockLocationGetter()
@@ -44,11 +57,45 @@ class MainActivity : AppCompatActivity() {
             } else {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
             }
+
+            notifications()
         }
 
 //        val weatherAdaptor = WeatherAdaptor(this, 5)
 //        weatherViewPager.adapter = weatherAdaptor
 //        weatherViewPager.registerOnPageChangeCallback(weatherPageCallback)
+    }
+
+    private fun createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channelId)
+            val descriptionText = getString(R.string.channelString)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(R.string.channelId.toString(), name, importance).apply {
+                description = descriptionText
+            }
+            //Register the channel with the system
+            val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun notifications() {
+        val intent = Intent(this, MainActivity::class.java)
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        val builder = NotificationCompat.Builder(this, R.string.channelId.toString())
+            .setSmallIcon(R.drawable.a50n)
+            .setContentText("Tomorrows weather")
+            .setContentText("Highs of ${oneHighTemp.text}, ${weatherSummaryText.text}")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        //Set the intent that will fire when the user taps the notification
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
+        //Show the notification
+        with(NotificationManagerCompat.from(this)) {
+            notify(notificationId, builder.build())
+        }
     }
 
     var weatherPageCallback = object : ViewPager2.OnPageChangeCallback() {
@@ -110,6 +157,10 @@ class MainActivity : AppCompatActivity() {
                 val gcd = Geocoder(this@MainActivity, Locale.getDefault())
                 val addresses = gcd.getFromLocation(weatherData.lat, weatherData.lon, 1)
                 val city = addresses[0].subAdminArea
+
+                //for notif
+                val highTemp = weatherData.current.temp.toString()
+                val summary = weatherData.current.weather[0].description
 
                 runOnUiThread {
 

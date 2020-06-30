@@ -64,4 +64,7 @@
     <string name="sevenLowTemp">17</string>
     <string name="sevenWeatherIcon">Thunderstorms</string>
 
+    <string name="channelId">Channel Name</string>
+    <string name="channelString">Channel String</string>
+
 </resources>
