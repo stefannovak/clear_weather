@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        populateMap()
 
         locationGetter = DefaultLocationGetter(this)
 //        locationGetter = MockLocationGetter()
@@ -59,6 +60,9 @@ class MainActivity : AppCompatActivity() {
 //        weatherViewPager.adapter = weatherAdaptor
 //        weatherViewPager.registerOnPageChangeCallback(weatherPageCallback)
 
+        newLocationButton.setOnClickListener{
+            locationMenu()
+        }
     }
 
     private fun locationMenu() {
@@ -124,7 +128,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initLocation() {
-        populateMap()
         locationGetter.getLocation { location ->
             fetchJson(location)
         }
@@ -142,6 +145,21 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    /**
+     * Look into interfaces, this would typically be something where you have an activity
+     * that calls lLocationService.fetchJson(location, this)
+     * where "this" is your activity which implements some
+     * ILocationListener which would be something like
+
+    interface ILocationListener { fun onLocationReceived(data: WeatherData) }
+
+    So then your activity will be forced to include an override for fun onLocationReceived,
+    do that and then in your fetchJson, after mapping to your WeatherData model call listener.onLocationRecieved(data).
+
+    In case it's not clear, your function fetchJson would add a 2nd param, "listener: ILocationListener".
+
+    This is an extremely rough concept of doing these network calls, but hopefully it will point you in the right direction.
+     */
     private fun fetchJson(location: com.stefanalexnovak.weatherapplication.location.Location) {
 
         var myUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=${location.latitude}&lon=${location.longitude}&exclude=minutely&appid=ee3cc93e43ef00b96a6bb4e56902d020"
@@ -295,7 +313,6 @@ class MainActivity : AppCompatActivity() {
                                 kelvinToCelsius(weatherData.hourly[12].temp).toString()
                         }
                     }
-
 
                     //Fill out info from top to bottom.
                     //Top

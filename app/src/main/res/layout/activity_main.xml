@@ -1047,6 +1047,7 @@
 
     <Button
         android:id="@+id/newLocationButton"
+        android:tooltipText="new location"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginStart="8dp"

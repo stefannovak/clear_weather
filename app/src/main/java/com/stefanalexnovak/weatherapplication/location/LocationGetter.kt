@@ -64,7 +64,7 @@ class DefaultLocationGetter : LocationGetter, GoogleApiClient.ConnectionCallback
     @SuppressLint("MissingPermission")
     override fun onConnected(p0: Bundle?) {
         var locationRequest = LocationRequest.create()
-        locationRequest.numUpdates = 100
+        locationRequest.numUpdates = 5
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         locationRequest.interval = 2000
         locationRequest.fastestInterval = 1000
